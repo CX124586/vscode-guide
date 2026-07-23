@@ -49,6 +49,30 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Skills Banner */}
+      <div className="max-w-4xl mx-auto w-full px-6 pt-8">
+        <Link
+          href="/skills"
+          className="group flex items-center justify-between p-5 rounded-xl bg-gradient-to-r from-[#007acc]/5 to-[#007acc]/10 dark:from-[#007acc]/10 dark:to-[#007acc]/5 border border-[#007acc]/20 hover:border-[#007acc]/50 transition-all"
+        >
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-lg">🔥</span>
+              <h2 className="font-bold text-zinc-900 dark:text-zinc-100">VS Code 技能推荐榜</h2>
+            </div>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              精选 23 个最热门、最有用的扩展，一键跳转安装
+            </p>
+          </div>
+          <div className="flex items-center gap-1 text-sm text-[#007acc] font-medium">
+            去看看
+            <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </Link>
+      </div>
+
       {/* Platform Selection */}
       <div className="max-w-4xl mx-auto w-full px-6 py-12">
         <div className="grid gap-8 md:grid-cols-2">

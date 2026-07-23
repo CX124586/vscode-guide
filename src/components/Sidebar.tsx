@@ -66,6 +66,16 @@ export default function Sidebar({ platform, activeSlug }: Props) {
           </div>
         ))}
       </div>
+
+      {/* Footer Links */}
+      <div className="border-t border-zinc-200 dark:border-zinc-800 p-3">
+        <Link
+          href="/skills"
+          className="flex items-center gap-2 px-2 py-1.5 text-xs text-zinc-500 hover:text-[#007acc] transition-colors rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        >
+          🔥 技能推荐榜
+        </Link>
+      </div>
     </nav>
   )
 }
