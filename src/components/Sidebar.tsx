@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { platforms, type DocMeta, type Platform } from '@/lib/docs'
+import DocSearch from './DocSearch'
 
 interface Props {
   platform: Platform
@@ -41,6 +42,9 @@ export default function Sidebar({ platform, activeSlug }: Props) {
           ))}
         </div>
       </div>
+
+      {/* Search */}
+      <DocSearch categories={categories} platform={platform} activeSlug={activeSlug} />
 
       {/* Doc List */}
       <div className="flex-1 overflow-y-auto p-4">
