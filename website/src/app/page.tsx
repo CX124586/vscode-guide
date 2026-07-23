@@ -1,9 +1,7 @@
 import Link from 'next/link'
-import { docCategories } from '@/lib/docs'
+import { platforms, type Platform } from '@/lib/docs'
 
 export default function Home() {
-  const totalDocs = docCategories.reduce((sum, cat) => sum + cat.docs.length, 0)
-
   return (
     <div className="flex flex-col flex-1 min-h-screen">
       {/* Hero */}
@@ -18,60 +16,59 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto mb-8">
-            从安装到精通，覆盖 macOS 平台的完整使用说明。
+            从安装到精通，覆盖 macOS 和 Windows 的完整使用说明。
             <br />
             特别收录 Superpowers AI 工作流指南，让 AI 助你高效编码。
           </p>
-          <div className="flex items-center justify-center gap-4">
-            <Link
-              href="/docs/01-installation"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#007acc] text-white font-medium hover:bg-[#0069a8] transition-colors"
-            >
-              开始学习
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-            <span className="text-sm text-zinc-400">
-              共 {totalDocs} 篇文章 · 持续更新
-            </span>
-          </div>
         </div>
       </header>
 
-      {/* Content Overview */}
-      <div className="flex-1 max-w-4xl mx-auto w-full px-6 py-12">
-        {docCategories.map((category) => (
-          <section key={category.title} className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">{category.title}</h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {category.docs.map((doc) => (
+      {/* Platform Selection */}
+      <div className="max-w-4xl mx-auto w-full px-6 py-12">
+        <div className="grid gap-8 md:grid-cols-2">
+          {(Object.entries(platforms) as [Platform, typeof platforms.macos][]).map(
+            ([key, config]) => {
+              const totalDocs = config.categories.reduce(
+                (sum, cat) => sum + cat.docs.length,
+                0,
+              )
+              const firstDoc = config.categories[0]?.docs[0]
+
+              return (
                 <Link
-                  key={doc.slug}
-                  href={`/docs/${doc.slug}`}
-                  className="group p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-[#007acc]/50 dark:hover:border-[#007acc]/50 transition-colors"
+                  key={key}
+                  href={`/docs/${key}/${firstDoc?.slug ?? ''}`}
+                  className="group p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-[#007acc]/50 dark:hover:border-[#007acc]/50 hover:shadow-lg transition-all"
                 >
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold group-hover:text-[#007acc] transition-colors">
-                      {doc.title}
-                    </h3>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
-                      {doc.tags?.[0] || '通用'}
-                    </span>
-                  </div>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                    {doc.description}
+                  <div className="text-4xl mb-4">{config.icon}</div>
+                  <h2 className="text-2xl font-bold mb-2 group-hover:text-[#007acc] transition-colors">
+                    {config.label}
+                  </h2>
+                  <p className="text-zinc-500 dark:text-zinc-400 mb-4">
+                    {totalDocs} 篇文章
                   </p>
+                  <div className="space-y-2">
+                    {config.categories.map((cat) => (
+                      <div key={cat.title}>
+                        <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                          {cat.title}
+                        </div>
+                        <div className="text-sm text-zinc-600 dark:text-zinc-400">
+                          {cat.docs.map((d) => d.title).join(' · ')}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </Link>
-              ))}
-            </div>
-          </section>
-        ))}
+              )
+            },
+          )}
+        </div>
       </div>
 
       {/* Footer */}
       <footer className="border-t border-zinc-200 dark:border-zinc-800 py-8 text-center text-sm text-zinc-500">
-        <p>VS Code 使用指南 · macOS 优先 · Windows 版本即将到来</p>
+        <p>VS Code 使用指南 · 持续更新中</p>
       </footer>
     </div>
   )

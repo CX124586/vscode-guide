@@ -6,13 +6,14 @@ metadata:
 ---
 
 **网站地址：** https://website-tan-xi-39.vercel.app
-**Vercel 项目：** tc23/website
+**GitHub 仓库：** CX124586/vscode-guide
+**Vercel 项目：** tc23/website (GitHub 自动部署已关联)
 **技术栈：** Next.js 16.2.11 (App Router) + Tailwind CSS v4 + MDX
 **内容数量：** 13 篇教程（macOS 第一阶段）
 **上次部署：** 2026-07-23
 
-**部署方式：** 手动 `npx vercel --prod`
-**自动部署建议：** 关联 GitHub 仓库后可实现 push 自动部署
+**部署方式：** `git push` 自动触发 Vercel 部署
+**SSH Key：** `~/.ssh/github_temp2`（已配置到 GitHub）
 
 ## 内容结构
 - 快速上手（2篇）：安装配置、界面基础

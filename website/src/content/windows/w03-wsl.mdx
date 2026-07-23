@@ -1,0 +1,276 @@
+export const meta = {
+  title: 'WSL 与远程开发',
+  description: '在 Windows 上通过 WSL 获得 Linux 开发体验',
+  order: 3,
+  tags: ['高阶'],
+}
+
+## 什么是 WSL
+
+**WSL（Windows Subsystem for Linux）** 是 Windows 的 Linux 子系统，让你在 Windows 上原生运行 Linux 环境，无需虚拟机或双系统。
+
+### WSL 1 vs WSL 2
+
+| 特性 | WSL 1 | WSL 2 |
+|------|-------|-------|
+| 架构 | 转换层 | 轻量 VM |
+| Linux 内核 | ❌（模拟） | ✅（真实内核） |
+| 文件性能（Linux） | 慢 | 快 |
+| 文件性能（Windows） | 快 | 慢（跨 OS 文件访问） |
+| Docker 支持 | ❌ | ✅ |
+| 推荐场景 | 简单的命令行工具 | 完整开发环境 |
+
+> 💡 **始终使用 WSL 2**，除非你有明确的兼容性需求。
+
+## 安装 WSL
+
+### 一键安装（Windows 11 / Windows 10 2004+）
+
+以**管理员身份**打开 PowerShell 或 CMD，运行：
+
+```bash
+wsl --install
+```
+
+这个命令会自动：
+- 启用 WSL 功能
+- 安装 WSL 2 内核
+- 设置默认 Ubuntu 发行版
+- 安装 Linux 内核
+
+### 手动安装
+
+如果一键安装不适用：
+
+```bash
+# 启用 WSL 功能
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+
+# 启用虚拟机平台
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+# 重启后设置 WSL 2 为默认
+wsl --set-default-version 2
+
+# 列出可用发行版
+wsl --list --online
+
+# 安装 Ubuntu
+wsl --install -d Ubuntu-24.04
+```
+
+### 管理 WSL
+
+```bash
+# 查看 WSL 状态
+wsl --status
+
+# 列出已安装的发行版
+wsl --list --verbose
+
+# 设置默认发行版
+wsl --set-default Ubuntu
+
+# 启动 WSL
+wsl
+
+# 停止 WSL
+wsl --shutdown
+
+# 导出/导入发行版（备份迁移）
+wsl --export Ubuntu ubuntu-backup.tar
+wsl --import Ubuntu-copy D:\WSL\ ubuntu-backup.tar
+```
+
+## VS Code + WSL 集成
+
+### 安装 Remote - WSL 扩展
+
+```bash
+# 在 VS Code 扩展面板搜索安装
+ext install ms-vscode-remote.remote-wsl
+
+# 或命令行安装
+code --install-extension ms-vscode-remote.remote-wsl
+```
+
+### 打开 WSL 项目
+
+**方式一：从 WSL 终端**
+
+在 WSL 终端中进入项目目录：
+
+```bash
+cd ~/project
+code .
+```
+
+VS Code 会自动以 `WSL: Ubuntu` 模式打开。
+
+**方式二：从 VS Code 界面**
+
+1. 点击左下角 `><` → `Connect to WSL`
+2. 选择 WSL 发行版
+3. 在新窗口中选择文件夹
+
+### WSL 中的 VS Code 配置
+
+远程连接后，VS Code 会在 WSL 中安装一个服务器组件。扩展安装分为：
+
+- **本地扩展**（UI、主题）
+- **WSL 扩展**（语言支持、调试器）
+
+```jsonc
+// WSL 远程设置
+{
+  "remote.WSL.fileWatcher.polling": true,
+  "remote.WSL.fileWatcher.pollingInterval": 5000,
+}
+```
+
+## WSL 开发环境配置
+
+### 安装开发工具
+
+在 WSL 终端中：
+
+```bash
+# 更新包管理器
+sudo apt update && sudo apt upgrade -y
+
+# 安装 Node.js 20.x（通过 nvm）
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+nvm install 20
+nvm use 20
+
+# 安装 Python
+sudo apt install python3 python3-pip -y
+
+# 安装 Git
+sudo apt install git -y
+
+# 安装 Docker（WSL 2 需要）
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+```
+
+### 文件位置建议
+
+```bash
+# WSL 文件系统（推荐，性能好）
+/home/username/projects/
+
+# Windows 文件系统（跨 OS 访问，性能较差）
+/mnt/c/Users/username/projects/
+```
+
+> ⚠️ **重要**：WSL 2 中访问 `/mnt/c/`（Windows 文件系统）性能明显更慢。把项目文件放在 WSL 的 Linux 文件系统内。
+
+## WSL 中的 Git 配置
+
+```bash
+# 配置 Git（WSL 内）
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+
+# 使用 Windows 的 Git 凭证管理器
+git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git-credential-manager.exe"
+
+# 处理换行符
+git config --global core.autocrlf input
+```
+
+## WSL 网络与端口
+
+```bash
+# WSL 2 的 IP 地址
+hostname -I
+
+# 从 Windows 访问 WSL 服务
+# WSL 2 的端口会自动转发到 Windows
+# 例如 WSL 中运行 npm run dev（端口 3000）
+# Windows 浏览器访问 http://localhost:3000
+
+# 查看端口转发
+netsh interface portproxy show v4tov4  # 在 Windows CMD/PowerShell 中
+```
+
+## VS Code 远程开发
+
+### Remote - SSH
+
+在 Windows 上通过 Remote - SSH 连接到远程 Linux 服务器：
+
+```bash
+# 安装 Remote - SSH 扩展
+ext install ms-vscode-remote.remote-ssh
+
+# SSH 配置文件位置（Windows）
+C:\Users\<username>\.ssh\config
+```
+
+### Dev Containers
+
+在 Windows 上使用 Dev Containers：
+
+```jsonc
+// .devcontainer/devcontainer.json（与 macOS 配置完全一致）
+{
+  "name": "Node.js Dev",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "forwardPorts": [3000],
+  "postCreateCommand": "npm install"
+}
+```
+
+前提：安装 Docker Desktop for Windows（启用 WSL 2 后端）。
+
+## WSL 性能优化
+
+```jsonc
+// settings.json（WSL 远程）
+{
+  // 大项目文件监控优化
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.git/objects/**": true
+  },
+
+  // 减少 WSL 2 的内存占用
+  // 在 Windows 用户目录创建 .wslconfig
+}
+```
+
+```ini
+# %USERPROFILE%\.wslconfig
+[wsl2]
+memory=8GB
+processors=4
+swap=2GB
+localhostForwarding=true
+```
+
+## macOS 用户迁移指南
+
+| 操作 | macOS | Windows/WSL |
+|------|-------|------------|
+| 终端 | Terminal.app / iTerm2 | Windows Terminal / WSL |
+| 包管理器 | Homebrew | apt / winget |
+| 文件路径 | `/Users/name/` | `C:\Users\name\` |
+| SSH | `~/.ssh/` | `%USERPROFILE%\.ssh\` |
+| 环境变量 | `export VAR=val` | `$env:VAR='val'` / `set VAR=val` |
+| 命令行 | bash / zsh | PowerShell / bash（WSL） |
+
+## VS Code for Web（免安装）
+
+如果不方便安装，也可以使用 [vscode.dev](https://vscode.dev/) 在浏览器中运行 VS Code：
+
+- 打开 GitHub 仓库直接编辑
+- 无需安装，浏览器即可使用
+- 功能有限（无终端、调试器）
+
+## 下一步
+
+- [macOS 版编辑超能力](/docs/macos/04-editing-superpowers) — 多光标、Snippet（跨平台通用）
+- [Git 集成](/docs/macos/06-git-integration) — VS Code Git 操作（跨平台通用）

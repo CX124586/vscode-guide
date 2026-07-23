@@ -1,0 +1,147 @@
+export const meta = {
+  title: '快捷键大全',
+  description: 'Windows 上 VS Code 完整快捷键速查表',
+  order: 2,
+  tags: ['基础'],
+}
+
+Windows 版 VS Code 将 macOS 的 `Cmd` 替换为 `Ctrl`，`Option` 替换为 `Alt`。以下以 Windows 键位为准。
+
+> 🔄 **从 macOS 迁移？** 几乎所有 `Cmd` 操作在 Windows 上对应 `Ctrl`，`Option` 对应 `Alt`。
+
+## 最核心快捷键（先记住这 10 个）
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+Shift+P` | 命令面板（记住这一个就能做所有事） |
+| `Ctrl+P` | 快速打开文件 |
+| `Ctrl+B` | 切换侧边栏 |
+| `Ctrl+J` | 切换面板（终端/输出等） |
+| `Ctrl+\` | 分屏 |
+| `Ctrl+W` | 关闭当前标签页 |
+| `Ctrl+Shift+K` | 删除当前行 |
+| `Ctrl+D` | 选中当前词（继续按选中下一个相同词） |
+| `Alt+↑/↓` | 向上/下移动当前行 |
+| `Ctrl+Shift+Enter` | 在当前行上方插入空行 |
+
+## 文件与标签页
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+N` | 新建文件 |
+| `Ctrl+S` | 保存 |
+| `Ctrl+Shift+S` | 另存为 |
+| `Ctrl+K S` | 全部保存 |
+| `Ctrl+W` | 关闭当前标签 |
+| `Ctrl+Shift+W` | 关闭窗口 |
+| `Ctrl+K W` | 关闭所有标签 |
+| `Ctrl+Shift+T` | 恢复关闭的标签 |
+| `Ctrl+Tab` | 在最近文件间切换 |
+
+## 光标与选择
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+←/→` | 跳到行首/行尾 |
+| `Ctrl+Home/End` | 跳到文件头/文件尾 |
+| `Ctrl+L` | 选中当前行 |
+| `Ctrl+A` | 全选 |
+| `Ctrl+Shift+L` | 全选所有匹配词 |
+
+## 多光标编辑
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+D` | 选中下一个匹配 |
+| `Ctrl+Shift+L` | 一键选中所有匹配 |
+| `Alt+单击` | 在任意位置添加光标 |
+| `Ctrl+Alt+↑/↓` | 在上/下行同列添加光标 |
+| `Shift+Alt+拖拽` | 列选择模式 |
+
+## 编辑操作
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+C/V/X` | 复制/粘贴/剪切 |
+| `Ctrl+Shift+K` | 删除当前行 |
+| `Ctrl+/` | 切换行注释 |
+| `Shift+Alt+A` | 切换块注释 |
+| `Ctrl+]` / `Ctrl+[` | 缩进/取消缩进 |
+| `Shift+Alt+F` | 格式化文档 |
+| `Ctrl+K Ctrl+F` | 格式化选中 |
+| `Ctrl+Shift+\` | 跳到匹配括号 |
+
+## 导航与搜索
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+P` | 文件搜索 |
+| `Ctrl+Shift+F` | 全局搜索 |
+| `Ctrl+Shift+O` | 跳转到符号 |
+| `Ctrl+G` | 跳转到行 |
+| `F8` | 下一个错误/警告 |
+| `Shift+F8` | 上一个错误/警告 |
+
+## 终端快捷键
+
+| 快捷键 | 功能 |
+|--------|------|
+| `` Ctrl+` `` | 打开/关闭终端 |
+| `` Ctrl+Shift+` `` | 创建新终端 |
+| `Ctrl+Shift+5` | 拆分终端 |
+| `Ctrl+K` | 清除终端（在终端聚焦时） |
+
+## 调试快捷键
+
+| 快捷键 | 功能 |
+|--------|------|
+| `F5` | 启动调试 |
+| `Shift+F5` | 停止调试 |
+| `F9` | 设置/取消断点 |
+| `F10` | 单步跳过 |
+| `F11` | 单步进入 |
+| `Shift+F11` | 单步跳出 |
+
+## Windows 特有的注意事项
+
+### 快捷键冲突
+
+以下 VS Code 快捷键可能与 Windows 系统快捷键冲突：
+
+| VS Code 快捷键 | 功能 | Windows 默认用途 |
+|---------------|------|-----------------|
+| `Alt+F4` | （未使用） | 关闭窗口 |
+| `Ctrl+Alt+↑/↓` | 添加上/下行光标 | Intel 显卡旋转屏幕 |
+| `Win+.` | 输入表情符号 | Windows Emoji 面板 |
+
+**解决方案：** 卸载冲突的显卡快捷键，或在 VS Code 中自定义快捷键。
+
+### 自定义快捷键
+
+```jsonc
+// keybindings.json
+[
+  // 用 Ctrl+E 替代 Ctrl+P 快速打开
+  {
+    "key": "ctrl+e",
+    "command": "workbench.action.quickOpen"
+  },
+  // 移除 Ctrl+P 的默认绑定
+  {
+    "key": "ctrl+p",
+    "command": "-workbench.action.quickOpen"
+  },
+  // 终端切换
+  {
+    "key": "alt+ctrl+t",
+    "command": "workbench.action.terminal.toggleTerminal"
+  }
+]
+```
+
+适用 VS Code 的所有编辑功能与 macOS 版本一致，详见 [macOS 编辑超能力](/docs/macos/04-editing-superpowers)。
+
+## 下一步
+
+- [WSL 与远程开发](/docs/windows/w03-wsl) — 配置 WSL 开发环境
+- [macOS 版编辑超能力](/docs/macos/04-editing-superpowers) — 多光标、Snippet、Emmet 等技巧（跨平台通用）
