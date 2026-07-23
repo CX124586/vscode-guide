@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "VS Code 使用指南",
   description: "VS Code 编辑器完整使用说明 — 从入门到精通，涵盖 Superpowers AI 工作流",
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({

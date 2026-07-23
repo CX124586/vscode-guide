@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import { platforms, type Platform } from '@/lib/docs'
+import { getSiteStats } from '@/lib/stats'
 
 export default function Home() {
+  const stats = getSiteStats()
+
   return (
     <div className="flex flex-col flex-1 min-h-screen">
       {/* Hero */}
@@ -20,6 +23,29 @@ export default function Home() {
             <br />
             特别收录 Superpowers AI 工作流指南，让 AI 助你高效编码。
           </p>
+
+          {/* Stats */}
+          <div className="flex items-center justify-center gap-8 text-sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{stats.totalArticles}</div>
+              <div className="text-zinc-500 dark:text-zinc-400">篇文章</div>
+            </div>
+            <div className="w-px h-10 bg-zinc-200 dark:bg-zinc-700" />
+            <div className="text-center">
+              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{(stats.totalWords / 1000).toFixed(1)}K</div>
+              <div className="text-zinc-500 dark:text-zinc-400">总字数</div>
+            </div>
+            <div className="w-px h-10 bg-zinc-200 dark:bg-zinc-700" />
+            <div className="text-center">
+              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">2</div>
+              <div className="text-zinc-500 dark:text-zinc-400">支持平台</div>
+            </div>
+            <div className="w-px h-10 bg-zinc-200 dark:bg-zinc-700" />
+            <div className="text-center">
+              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 text-sm">{stats.lastUpdated}</div>
+              <div className="text-zinc-500 dark:text-zinc-400">最近更新</div>
+            </div>
+          </div>
         </div>
       </header>
 
