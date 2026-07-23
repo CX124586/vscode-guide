@@ -1,0 +1,57 @@
+export const meta = {
+  title: '集成终端',
+  description: 'PowerShell、CMD、Git Bash 终端配置',
+  order: 4,
+  tags: ['基础'],
+}
+
+Windows 上的 VS Code 终端支持 PowerShell、CMD、Git Bash 等多个 Shell。
+
+## 默认终端配置
+
+```jsonc
+{
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell",
+      "args": ["-NoLogo"]
+    },
+    "Command Prompt": {
+      "path": ["${env:windir}\\System32\\cmd.exe"],
+      "icon": "terminal-cmd"
+    },
+    "Git Bash": {
+      "path": "C:\\Program Files\\Git\\bin\\bash.exe",
+      "icon": "terminal-bash"
+    }
+  }
+}
+```
+
+## Windows Terminal 集成
+
+推荐安装 [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701)，VS Code 可以自动检测并使用：
+
+```jsonc
+{
+  "terminal.external.windowsExec": "wt.exe",
+  "terminal.integrated.defaultProfile.windows": "PowerShell"
+}
+```
+
+## 快捷键对照
+
+| 操作 | Windows |
+|------|---------|
+| 打开/关闭终端 | `` Ctrl+` `` |
+| 新建终端 | `` Ctrl+Shift+` `` |
+| 拆分终端 | `Ctrl+Shift+5` |
+| 清除终端 | `Ctrl+K` |
+
+## 详细教程
+
+终端的其他功能（多终端管理、Tasks、联动等）均为跨平台通用。
+
+👉 详见 [macOS 集成终端](/docs/macos/05-integrated-terminal)

@@ -73,7 +73,26 @@ export const platforms: Record<Platform, PlatformConfig> = {
         title: '核心能力',
         docs: [
           { title: '快捷键大全', description: 'Windows 上 VS Code 完整快捷键速查表', order: 2, tags: ['基础'], slug: 'w02-keyboard-shortcuts' },
-          { title: 'WSL 与远程开发', description: '在 Windows 上通过 WSL 获得 Linux 开发体验', order: 3, tags: ['高阶'], slug: 'w03-wsl' },
+          { title: '编辑超能力', description: '多光标、智能提示等编辑技巧（跨平台通用）', order: 3, tags: ['基础'], slug: 'w04-editing-superpowers' },
+          { title: '集成终端', description: 'PowerShell、CMD、Git Bash 终端配置', order: 4, tags: ['基础'], slug: 'w05-integrated-terminal' },
+          { title: 'Git 集成', description: 'VS Code 中的版本控制（跨平台通用）', order: 5, tags: ['基础'], slug: 'w06-git-integration' },
+          { title: '调试技巧', description: '高效 Debug（跨平台通用）', order: 6, tags: ['基础'], slug: 'w07-debugging' },
+        ],
+      },
+      {
+        title: '效率飞升',
+        docs: [
+          { title: '设置深度定制', description: 'settings.json 与快捷键绑定（跨平台通用）', order: 7, tags: ['进阶'], slug: 'w08-settings-customization' },
+          { title: '扩展生态', description: '精选扩展推荐（跨平台通用）', order: 8, tags: ['进阶'], slug: 'w09-extensions' },
+          { title: 'Tasks 自动化', description: '任务自动化（跨平台通用）', order: 9, tags: ['进阶'], slug: 'w10-tasks-automation' },
+        ],
+      },
+      {
+        title: '高阶战场',
+        docs: [
+          { title: 'WSL 与远程开发', description: '在 Windows 上通过 WSL 获得 Linux 开发体验', order: 10, tags: ['高阶'], slug: 'w03-wsl' },
+          { title: '性能调优', description: '让 VS Code 保持流畅（跨平台通用）', order: 11, tags: ['高阶'], slug: 'w12-performance-tuning' },
+          { title: 'Superpowers AI 工作流', description: '用 AI 增强编码（跨平台通用）', order: 12, tags: ['高阶'], slug: 'w13-superpowers' },
         ],
       },
     ],

@@ -1,0 +1,40 @@
+export const meta = {
+  title: '设置深度定制',
+  description: 'settings.json 与快捷键绑定',
+  order: 7,
+  tags: ['进阶'],
+}
+
+设置功能跨平台通用。以下仅列出 Windows 特有的差异。
+
+## 配置文件路径
+
+| 配置 | Windows 路径 |
+|------|-------------|
+| 用户设置 | `%APPDATA%\Code\User\settings.json` |
+| 快捷键 | `%APPDATA%\Code\User\keybindings.json` |
+| 用户片段 | `%APPDATA%\Code\User\snippets\` |
+
+## 快捷键差异
+
+Windows 使用 `Ctrl` 替代 macOS 的 `Cmd`，`Alt` 替代 `Option`。
+
+```jsonc
+// keybindings.json（Windows）
+[
+  {
+    "key": "ctrl+e",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "alt+ctrl+t",
+    "command": "workbench.action.terminal.toggleTerminal"
+  }
+]
+```
+
+## 详细教程
+
+所有设置功能（三层设置体系、语言特定设置、设置同步、工作区配置）均为 **跨平台通用**。
+
+👉 详见 [macOS 设置深度定制](/docs/macos/08-settings-customization)

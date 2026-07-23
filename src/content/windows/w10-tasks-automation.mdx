@@ -1,0 +1,27 @@
+export const meta = {
+  title: 'Tasks 自动化',
+  description: '任务自动化',
+  order: 9,
+  tags: ['进阶'],
+}
+
+Tasks 功能在 Windows 和 macOS 上完全一致。
+
+## Shell 差异
+
+Windows 默认使用 PowerShell，编写 shell 命令时注意：
+
+```jsonc
+{
+  "label": "Build",
+  "type": "shell",
+  "command": "npm run build",  // npm 命令跨平台兼容
+  "group": "build"
+}
+```
+
+## 详细教程
+
+所有 Tasks 功能（npm 任务、组合任务、Problem Matcher、快捷键绑定）均为 **跨平台通用**。
+
+👉 详见 [macOS Tasks 自动化](/docs/macos/10-tasks-automation)

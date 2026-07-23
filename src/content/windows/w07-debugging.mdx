@@ -1,0 +1,43 @@
+export const meta = {
+  title: '调试技巧',
+  description: '高效 Debug 工作流',
+  order: 6,
+  tags: ['基础'],
+}
+
+VS Code 的调试功能在 Windows 和 macOS 上完全一致。仅快捷键不同。
+
+## 快捷键对照
+
+| 操作 | macOS | Windows |
+|------|-------|---------|
+| 启动调试 | `F5` | `F5` |
+| 停止 | `Shift+F5` | `Shift+F5` |
+| 断点 | `F9` | `F9` |
+| 单步跳过 | `F10` | `F10` |
+| 单步进入 | `F11` | `F11` |
+| 单步跳出 | `Shift+F11` | `Shift+F11` |
+
+## launch.json 注意事项
+
+Windows 路径使用反斜杠：
+
+```jsonc
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}\\src\\index.js"
+    }
+  ]
+}
+```
+
+## 详细教程
+
+所有调试功能（断点类型、监视、调试控制台、配置等）均为 **跨平台通用**。
+
+👉 详见 [macOS 调试技巧](/docs/macos/07-debugging)

@@ -1,0 +1,47 @@
+export const meta = {
+  title: 'Git 集成',
+  description: 'VS Code 中的版本控制操作',
+  order: 5,
+  tags: ['基础'],
+}
+
+VS Code 的 Git 集成在 Windows 和 macOS 上完全一致。
+
+## 前提
+
+确保系统已安装 Git：
+
+```bash
+# 从官网下载安装
+# https://git-scm.com/download/win
+
+# 或使用 winget
+winget install Git.Git
+
+# 验证
+git --version
+```
+
+## 推荐配置
+
+```bash
+# 换行符处理（Windows 特有）
+git config --global core.autocrlf true
+
+# 使用 VS Code 作为 Git 编辑器
+git config --global core.editor "code --wait"
+```
+
+## 功能一览
+
+所有 Git 功能（变更管理、暂存、提交、分支、Diff、冲突解决）均为 **跨平台通用**。
+
+| 操作 | Windows |
+|------|---------|
+| 打开 Git 面板 | `Ctrl+Shift+G` |
+| 打开命令面板 | `Ctrl+Shift+P` → `Git:` |
+| 暂存变更 | 点击文件旁的 ➕ |
+
+## 详细教程
+
+👉 详见 [macOS Git 集成](/docs/macos/06-git-integration)

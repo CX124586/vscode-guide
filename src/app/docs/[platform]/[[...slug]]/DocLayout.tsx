@@ -30,6 +30,15 @@ const docRegistry: Record<string, Record<string, () => Promise<{ default: React.
     'w01-installation': () => import('@/content/windows/w01-installation.mdx'),
     'w02-keyboard-shortcuts': () => import('@/content/windows/w02-keyboard-shortcuts.mdx'),
     'w03-wsl': () => import('@/content/windows/w03-wsl.mdx'),
+    'w04-editing-superpowers': () => import('@/content/windows/w04-editing-superpowers.mdx'),
+    'w05-integrated-terminal': () => import('@/content/windows/w05-integrated-terminal.mdx'),
+    'w06-git-integration': () => import('@/content/windows/w06-git-integration.mdx'),
+    'w07-debugging': () => import('@/content/windows/w07-debugging.mdx'),
+    'w08-settings-customization': () => import('@/content/windows/w08-settings-customization.mdx'),
+    'w09-extensions': () => import('@/content/windows/w09-extensions.mdx'),
+    'w10-tasks-automation': () => import('@/content/windows/w10-tasks-automation.mdx'),
+    'w12-performance-tuning': () => import('@/content/windows/w12-performance-tuning.mdx'),
+    'w13-superpowers': () => import('@/content/windows/w13-superpowers.mdx'),
   },
 }
 
