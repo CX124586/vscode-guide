@@ -1,0 +1,260 @@
+export const meta = {
+  title: '远程开发',
+  description: 'SSH Remote、Dev Containers、Codespaces 远程开发',
+  order: 11,
+  tags: ['高阶'],
+}
+
+VS Code 的远程开发功能让你能在本地编辑器中使用远程服务器、容器或 GitHub Codespaces 的完整计算资源。
+
+## 远程开发三件套
+
+| 扩展 | 用途 | 场景 |
+|------|------|------|
+| **Remote - SSH** | 通过 SSH 连接远程服务器 | 开发服务器、云主机、树莓派 |
+| **Dev Containers** | 在 Docker 容器中开发 | 团队统一环境、隔离依赖 |
+| **GitHub Codespaces** | 云端开发环境 | 临时开发、快速上手 |
+
+### 安装方式
+
+```bash
+ext install ms-vscode-remote.remote-ssh
+ext install ms-vscode-remote.remote-containers
+ext install ms-vscode-remote.remote-ssh-edit
+```
+
+> 💡 VS Code 在底部状态栏左下角显示当前连接状态。点击即可快速切换远程连接。
+
+## Remote - SSH
+
+### 基本配置
+
+1. 安装 Remote - SSH 扩展
+2. 点击左下角 `><` → `Connect to Host...`
+3. 输入 `user@hostname` 或 IP 地址
+
+```bash
+# 也可以直接编辑 SSH 配置文件
+# ~/.ssh/config
+Host my-server
+  HostName 192.168.1.100
+  User ubuntu
+  Port 22
+  IdentityFile ~/.ssh/id_ed25519
+```
+
+### 高级配置
+
+```bash
+# ~/.ssh/config - 多服务器配置
+Host dev-server
+  HostName dev.example.com
+  User developer
+  ForwardAgent yes
+  ServerAliveInterval 60
+
+Host gpu-server
+  HostName 10.0.0.50
+  User ai-user
+  IdentityFile ~/.ssh/gpu-key
+  Port 2222
+  LocalForward 8888 localhost:8888  # Jupyter 端口转发
+```
+
+### 远程开发最佳实践
+
+```jsonc
+// 远程用户设置 （Remote [SSH] settings.json）
+{
+  "remote.SSH.showLoginTerminal": true,
+  "remote.SSH.path": "/usr/bin/ssh",
+  "remote.SSH.configFile": "/Users/me/.ssh/config",
+  "remote.SSH.forwardX11": false
+}
+```
+
+**连接后：**
+- 在远程机器上安装扩展（VS Code 会提示"在远程安装"）
+- 文件系统、终端、调试器全部运行在远程
+- 打开的文件通过 SSH 传输，延迟极低
+
+## Dev Containers
+
+### 前提条件
+
+- Docker Desktop for Mac 已安装运行
+- Dev Containers 扩展已安装
+
+### 快速开始
+
+在项目根目录创建 `.devcontainer/devcontainer.json`：
+
+```jsonc
+// .devcontainer/devcontainer.json
+{
+  "name": "Node.js Development",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ],
+      "settings": {
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "postCreateCommand": "npm install",
+  "forwardPorts": [3000, 5173],
+  "remoteUser": "node"
+}
+```
+
+然后点击左下角 `><` → `Reopen in Container`。
+
+### 更多容器配置
+
+```jsonc
+// Python 数据科学容器
+{
+  "name": "Python Data Science",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  },
+  "postCreateCommand": "pip install -r requirements.txt",
+  "forwardPorts": [8888]
+}
+```
+
+### Dockerfile 方式
+
+```dockerfile
+# .devcontainer/Dockerfile
+FROM node:20-slim
+
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+USER node
+WORKDIR /workspace
+```
+
+```jsonc
+{
+  "name": "Custom Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": { "VARIANT": "20" }
+  },
+  "remoteUser": "node"
+}
+```
+
+## GitHub Codespaces
+
+### 配置 codespace
+
+在项目根目录创建 `.devcontainer/devcontainer.json`（同上），然后：
+
+1. 打开 GitHub 仓库页面
+2. 点击 `Code` → `Codespaces` → `Create codespace on main`
+3. 等待环境构建（30秒-2分钟）
+4. 在浏览器中直接使用 VS Code
+
+### 常用命令
+
+```bash
+# 在终端中创建 codespace
+gh codespace create --repo owner/repo --branch main
+gh codespace list
+gh codespace code
+```
+
+### Codespaces 配置建议
+
+```jsonc
+{
+  "name": "My Project",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Application",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "npm install && npm run build"
+}
+```
+
+## 远程开发工作流对比
+
+| 特性 | SSH | Dev Containers | Codespaces |
+|------|-----|---------------|------------|
+| 需要本地机器 | ✅ | ✅ | ❌（全云端） |
+| 需安装 Docker | ❌ | ✅ | ✅（自动） |
+| 环境一致性 | 手动管理 | Docker 保证 | Docker 保证 |
+| GPU 支持 | ✅ | ✅ (NVIDIA) | ✅ |
+| 延迟 | 极低 | 本地 | 依赖网络 |
+| 离线使用 | ✅ | ✅ | ❌ |
+| 费用 | 自有服务器 | 本地资源 | 按分钟计费 |
+
+## 远程开发的扩展管理
+
+远程连接后，扩展分为三类：
+
+- **本地扩展** — 在本地 VS Code 窗口运行（主题、快捷键）
+- **远程扩展** — 在远程服务器运行（语言支持、调试器）
+- **通用扩展** — 同时在两端运行
+
+```bash
+# 在远程终端查看已安装的扩展
+code --list-extensions
+```
+
+> 💡 建议远程只安装必要的开发扩展，主题等 UI 扩展留在本地。
+
+## 性能优化
+
+```jsonc
+{
+  // 远程性能优化
+  "remote.localPortHost": "localhost",
+  "remote.SSH.maxReconnectionAttempts": 5,
+  "remote.SSH.showLoginTerminal": false,
+
+  // 大文件取消实时同步
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/data/**": true
+  }
+}
+```
+
+## 下一步
+
+- [性能调优](/docs/12-performance-tuning) — 大项目中保持 VS Code 流畅
+- [Superpowers AI 工作流](/docs/13-superpowers) — 用 AI 增强远程开发

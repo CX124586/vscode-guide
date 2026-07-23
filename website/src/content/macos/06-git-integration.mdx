@@ -1,0 +1,235 @@
+export const meta = {
+  title: 'Git 集成',
+  description: '在 VS Code 中完成 Git 版本控制操作',
+  order: 6,
+  tags: ['基础'],
+}
+
+VS Code 内置了完整的 Git 可视化界面，无需在终端和编辑器间来回切换。
+
+## 前置条件
+
+确保系统已安装 Git：
+
+```bash
+git --version
+# 如果没有安装:
+brew install git
+```
+
+VS Code 会自动检测系统中的 Git。
+
+## Git 面板
+
+### 打开方式
+
+| 方式 | 操作 |
+|------|------|
+| 活动栏 | 点击左侧 ⎔ 图标 |
+| 快捷键 | `Cmd+Shift+G` |
+| 命令面板 | `Cmd+Shift+P` → `Git: Show Source Control` |
+
+### 面板结构
+
+```
+⎔ 源代码管理 (SOURCE CONTROL)
+├── 变更 (Changes)
+│   ├── src/app.tsx         (M - 修改)
+│   ├── package.json        (A - 新增)
+│   └── .env.example        (D - 删除)
+│
+├── 暂存的变更 (Staged Changes)
+│   └── README.md           (已暂存)
+│
+└── ...更多（合并冲突、未跟踪等）
+```
+
+- **M** = Modified（已修改）
+- **A** = Added（已新增）
+- **D** = Deleted（已删除）
+- **U** = Untracked（未跟踪）
+- **C** = Conflict（有冲突）
+
+## 日常操作流程
+
+### 1. 查看变更
+
+点击文件夹或文件展开查看具体的代码改动：
+
+```
+├── src/app.tsx (+10, -3)
+    │   import { useState } from 'react'         (+)
+    │ -  const name = 'old'
+    │ +  const name = 'new'
+```
+
+- **绿色** = 新增代码
+- **红色** = 删除代码
+- **右侧编辑器** = 内联 Diff 视图
+
+### 2. 暂存 (Stage)
+
+**三种方式：**
+
+- 鼠标悬停文件 → 点击 `+` 号
+- 右键文件 → Stage Changes
+- 拖拽文件到 "Staged Changes" 区域
+
+**部分暂存：**
+在 Diff 视图中选择一段代码 → 右键 → Stage Selected Range
+
+### 3. 提交 (Commit)
+
+1. 在面板顶部输入框写提交信息
+2. `Cmd+Enter` 提交（或点击 ✓ 按钮）
+
+**提交最佳实践：**
+
+```bash
+# 好的提交信息
+fix: 修复用户登录时 token 过期未刷新
+
+# 不好的提交信息
+fix bug
+update
+```
+
+### 4. 推送 (Push)
+
+提交后点击面板右上角的 `…` → Push，或使用命令面板 `Git: Push`。
+
+## 分支管理
+
+### 创建和切换分支
+
+**可视化的方式：**
+
+1. 点击状态栏左下角的分支名（如 `main`）
+2. 选择 `Create new branch...`
+3. 输入分支名
+
+**命令面板方式：**
+
+```
+Cmd+Shift+P → Git: Create Branch
+Cmd+Shift+P → Git: Checkout to → 选择分支
+```
+
+### 合并 (Merge)
+
+1. 先切换到目标分支（如 `main`）
+2. `Cmd+Shift+P` → `Git: Merge Branch`
+3. 选择要合并的分支（如 `feature/login`）
+
+## Diff 视图
+
+查看文件变更的核心工具：
+
+| 操作 | 说明 |
+|------|------|
+| 暂存 | 点击文件旁的 `+` |
+| 丢弃更改 | 点击文件旁的 `-` / `Discard Changes` |
+| 在 Diff 中编辑 | 直接在右侧编辑器中修改 |
+| 对比前一个版本 | 右键 → `Open Changes with Previous Revision` |
+
+### 对比任意两个版本
+
+1. 在 Timeline 视图中找到文件历史
+2. 按住 `Cmd` 选中两个版本
+3. 右键 → Compare
+
+## 历史记录 (Timeline)
+
+VS Code 内置 Timeline 视图显示文件的历史版本：
+
+```bash
+# 在文件资源管理器底部 → Timeline 面板
+# 显示：
+#   - Git 提交历史
+#   - 本地保存历史（需要设置）
+```
+
+**启用本地历史：**
+```jsonc
+{
+  "workbench.localHistory.enabled": true,
+  "workbench.localHistory.maxFileSize": 51200,
+  "workbench.localHistory.maxFileEntries": 50
+}
+```
+
+## 解决合并冲突
+
+当合并发生冲突时，VS Code 提供三路合并编辑器：
+
+```
+<<<<<<< HEAD
+当前分支的内容
+=======
+合并进来的内容
+>>>>>>> feature/login
+```
+
+### 使用冲突编辑器
+
+```
+┌────────────────────────────────────────────┐
+│  合并冲突: src/app.tsx                      │
+├────────────┬───────────────┬───────────────┤
+│  当前       │  合并结果      │  引入          │
+│  (Current) │  (Result)     │  (Incoming)   │
+├────────────┴───────────────┴───────────────┤
+│  操作按钮:                                  │
+│  [接受当前] [接受引入] [接受两者] [对比]     │
+└────────────────────────────────────────────┘
+```
+
+点击顶部按钮选择合并策略，然后保存文件。
+
+## GitLens 扩展推荐
+
+虽然 VS Code 内置 Git 功能已经很强，但 [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) 扩展能带来更强大的体验：
+
+| 功能 | 说明 |
+|------|------|
+| Blame 注释 | 每行代码旁显示最后修改者和时间 |
+| Git 历史图 | 可视化分支和历史 |
+| 代码透镜 | 在函数上方显示作者和提交信息 |
+| 搜索提交 | 按作者、文件、代码搜索提交 |
+
+```bash
+# 安装 GitLens
+ext install eamodio.gitlens
+```
+
+## Git 配置建议
+
+```jsonc
+// settings.json
+{
+  // 自动获取远程仓库更新
+  "git.autofetch": true,
+  // 提交前确认
+  "git.confirmSync": true,
+  // 启用 Git Lens 的 Code Lens
+  "gitlens.codeLens.enabled": true,
+  // 显示 Blame 信息
+  "gitlens.currentLine.enabled": true
+}
+```
+
+## 常用 Git 命令对比
+
+| 可视化操作 | 等效终端命令 |
+|-----------|-------------|
+| 点击 `+` 暂存 | `git add .` |
+| `Cmd+Enter` | `git commit -m "msg"` |
+| 点击 Push | `git push` |
+| 点击 Pull | `git pull` |
+| 创建分支 | `git checkout -b name` |
+| Merge Branch | `git merge name` |
+
+## 下一步
+
+- [调试技巧](/docs/07-debugging) — 高效 Debug 工作流
+- [扩展生态](/docs/09-extensions) — 更多 Git 相关扩展推荐

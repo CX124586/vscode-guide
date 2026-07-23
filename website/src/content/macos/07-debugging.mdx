@@ -1,0 +1,309 @@
+export const meta = {
+  title: '调试技巧',
+  description: '使用 VS Code 调试器高效排查代码问题',
+  order: 7,
+  tags: ['基础'],
+}
+
+VS Code 内置了强大的调试器，支持 Node.js、Python、Go、Rust 等主流语言。
+
+## 调试界面速览
+
+```
+┌─────────────────────────────────────────────────┐
+│  🐞 运行和调试                                    │
+├─────────────────────────────────────────────────┤
+│  VARIABLES                                       │
+│  ├─ Local                                        │
+│  │  ├─ user: {name: "Alice", age: 25}           │
+│  │  ├─ count: 42                                │
+│  │  └─ flag: true                                │
+│  │                                               │
+│  WATCH                                           │
+│  ├─ typeof count → "number"                      │
+│  │                                               │
+│  CALL STACK                                      │
+│  ├─ renderComponent                              │
+│  │  src/app.tsx:15                               │
+│  ├─ initApp                                      │
+│  │  src/main.tsx:8                               │
+│  │                                               │
+│  BREAKPOINTS                                     │
+│  ├─ src/app.tsx:15                               │
+│  └─ src/utils.ts:42 (条件)                        │
+└─────────────────────────────────────────────────┘
+```
+
+## 基本操作
+
+### 启动调试
+
+| 操作 | 快捷键 |
+|------|--------|
+| 启动/继续 | `F5` |
+| 停止 | `Shift+F5` |
+| 重启 | `Cmd+Shift+F5` |
+| 打开调试视图 | `Cmd+Shift+D` |
+
+### 断点操作
+
+| 操作 | 快捷键 |
+|------|--------|
+| 设置/取消断点 | `F9` |
+| 启用/禁用断点 | 右键断点 → 选择 |
+| 编辑断点条件 | 右键断点 → Edit Breakpoint |
+| 所有断点列表 | 调试侧边栏的 Breakpoints 区域 |
+
+## 断点类型
+
+### 普通断点
+
+点击行号左侧的空白区域，出现红色圆点即设置成功。
+
+### 条件断点
+
+右键行号 → Add Conditional Breakpoint：
+
+```javascript
+// 只在满足条件时暂停
+count > 100
+user.name === "Alice"
+items.length === 0
+```
+
+### 命中计数断点
+
+只在第 N 次执行到该行时暂停：
+
+```
+>10   // 第10次执行时暂停
+>=10  // 第10次及之后暂停
+%10   // 每10次暂停一次
+```
+
+### 日志断点 (Logpoint)
+
+不暂停，只在控制台输出信息：
+
+```javascript
+// 右键 → Add Logpoint → 输入:
+user.name loaded: {user.name}
+// 程序不会暂停，只在调试控制台输出日志
+```
+
+## 调试控制
+
+### 单步执行
+
+| 操作 | 快捷键 | 说明 |
+|------|--------|------|
+| 继续 | `F5` | 运行到下一个断点 |
+| 单步跳过 | `F10` | 执行当前行，不进入函数 |
+| 单步进入 | `F11` | 进入函数内部 |
+| 单步跳出 | `Shift+F11` | 跳出当前函数 |
+| 重启 | `Cmd+Shift+F5` | 重启调试会话 |
+| 停止 | `Shift+F5` | 停止调试 |
+
+### 监视变量
+
+在 Debug 侧边栏的 WATCH 区域点击 `+`，输入表达式：
+
+```javascript
+// 你可以监视任何 JavaScript 表达式
+count
+items.length
+typeof result
+JSON.stringify(user, null, 2)
+```
+
+### 在调试控制台执行代码
+
+使用 `Cmd+Shift+Y` 打开调试控制台，可以实时执行代码：
+
+```
+> user.name
+"Alice"
+> items.map(i => i.id)
+[1, 2, 3, 4]
+> count + 100
+142
+```
+
+## launch.json 配置
+
+调试配置存储在项目根目录的 `.vscode/launch.json` 中：
+
+### Node.js 调试
+
+```jsonc
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Node.js",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.js",
+      "skipFiles": ["<node_internals>/**"],
+      "env": { "NODE_ENV": "development" },
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+    }
+  ]
+}
+```
+
+### TypeScript 调试 (Node.js)
+
+```jsonc
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug TypeScript",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${workspaceFolder}/src/index.ts"],
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "console": "integratedTerminal"
+    }
+  ]
+}
+```
+
+### Python 调试
+
+```jsonc
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
+}
+```
+
+### 附加到进程
+
+```jsonc
+{
+  "name": "Attach to Process",
+  "type": "node",
+  "request": "attach",
+  "port": 9229,
+  "restart": true,
+  "localRoot": "${workspaceFolder}",
+  "remoteRoot": "/app"
+}
+```
+
+### 配置调试多个目标
+
+```jsonc
+{
+  "version": "0.2.0",
+  "configurations": [...],
+  "compounds": [
+    {
+      "name": "Server + Client",
+      "configurations": ["Debug Server", "Debug Client"],
+      "stopAll": true
+    }
+  ]
+}
+```
+
+## 调试不同语言
+
+### JavaScript / TypeScript
+
+内置支持，无需额外配置。Node.js >= 8.0 即可。
+
+```bash
+# 或者使用 Attach 模式
+node --inspect-brk app.js
+```
+
+### Python
+
+需要安装 Python 扩展：
+
+```bash
+ext install ms-python.python
+```
+
+### Go
+
+需要安装 Go 扩展和 Delve：
+
+```bash
+ext install golang.go
+go install github.com/go-delve/delve/cmd/dlv@latest
+```
+
+### Rust
+
+需要安装 rust-analyzer 扩展和 CodeLLDB：
+
+```bash
+ext install rust-lang.rust-analyzer
+ext install vadimcn.vscode-lldb
+```
+
+## 调试小技巧
+
+### 1. 调试时编辑代码
+
+在调试过程中可以直接编辑代码，VS Code 会热重载（部分语言支持）。
+
+### 2. 内联值显示
+
+```jsonc
+{
+  "debug.inlineValues": true
+  // 在编辑器中直接显示变量值
+}
+```
+
+### 3. 自动保存时重启
+
+```jsonc
+{
+  "debug.node.autoAttach": "on",
+  "debug.restartAfterSave": true
+  // 保存文件自动重启调试
+}
+```
+
+### 4. 使用 Debug Console 替代 console.log
+
+在调试控制台执行表达式比到处写 `console.log` 更高效。按 `Cmd+Shift+Y` 打开。
+
+### 5. 异常断点
+
+在 Debug 边栏的 BREAKPOINTS 区域可以配置：
+
+- **All Exceptions**：所有异常都中断
+- **Uncaught Exceptions**：只中断未捕获的异常
+- 勾选后将暂停在抛异常的位置
+
+## 调试最佳实践
+
+1. **用条件断点代替 console.log** — 更精准、无污染
+2. **用 Watch 表达式跟踪关键状态** — 实时观察变化
+3. **用 Logpoints 在 CI 中调试** — 不中断流程就能输出信息
+4. **配置多个 Launch 配置文件** — 不同场景一键切换
+5. **使用 Debug Console 探索运行时状态** — 比 Read-Eval-Print Loop 更方便
+
+## 下一步
+
+- [设置深度定制](/docs/08-settings-customization) — 定制你的 VS Code 环境
+- [扩展生态](/docs/09-extensions) — 精选扩展推荐

@@ -1,0 +1,212 @@
+export const meta = {
+  title: '集成终端',
+  description: 'VS Code 内置终端的使用与配置',
+  order: 5,
+  tags: ['基础'],
+}
+
+VS Code 的集成终端让你不用离开编辑器就能执行命令行操作。
+
+## 基本操作
+
+| 操作 | 快捷键 |
+|------|--------|
+| 打开/关闭终端 | `` Ctrl+` `` |
+| 创建新终端 | `` Ctrl+Shift+` `` |
+| 拆分终端 | `Cmd+\` （在终端面板内） |
+| 切换终端 Tab | `Cmd+1/2/3` 或 Tab 点击 |
+| 清除终端 | `Cmd+K` |
+| 关闭终端 | `Cmd+W` （在终端聚焦时） |
+| 最大化终端 | `Cmd+Shift+↑` |
+
+### 打开终端的多种方式
+
+- **命令面板**：`Cmd+Shift+P` → 输入 `terminal: create`
+- **菜单**：View → Terminal
+- **快捷键**：`` Ctrl+` ``
+
+## 终端配置
+
+### 配置默认 Shell
+
+macOS 默认使用 Zsh。如果你有多个 Shell 可以切换：
+
+```jsonc
+// settings.json
+{
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.profiles.osx": {
+    "bash": { "path": "bash", "args": ["-l"] },
+    "zsh": { "path": "zsh", "args": ["-l"] },
+    "fish": { "path": "fish", "args": ["-l"] }
+  }
+}
+```
+
+### 字体与外观
+
+```jsonc
+{
+  // 使用等宽字体，和编辑器一致
+  "terminal.integrated.fontFamily": "monospace",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.lineHeight": 1.3,
+  "terminal.integrated.cursorStyle": "line",   // line | block | underline
+  "terminal.integrated.cursorBlinking": true,   // 光标闪烁
+}
+```
+
+### 颜色主题
+
+```jsonc
+{
+  "workbench.colorCustomizations": {
+    "terminal.background": "#1e1e1e",
+    "terminal.foreground": "#d4d4d4",
+    "terminal.ansiBlack": "#1e1e1e",
+    "terminal.ansiGreen": "#6a9955",
+    "terminal.ansiBlue": "#569cd6"
+  }
+}
+```
+
+## 多终端管理
+
+### 并排终端
+
+在需要同时运行多个命令时非常有用：
+
+```bash
+# 终端 1: 运行 dev server
+npm run dev
+
+# 终端 2 (拆分): 运行测试
+npm run test:watch
+
+# 终端 3: 查看日志
+tail -f logs/app.log
+```
+
+### 终端命名
+
+右键点击终端 Tab 选择 Rename，或双击 Tab 重命名，方便区分用途。
+
+## 终端与编辑器联动
+
+### 从终端打开文件
+
+```bash
+# VS Code 提供了 code 命令
+code file.ts          # 打开文件
+code .                # 打开当前目录
+code -r .             # 在当前窗口打开
+code --diff a.ts b.ts # 对比两个文件
+```
+
+### 从编辑器运行命令
+
+1. 选中命令文本
+2. `Cmd+Shift+P` → `Terminal: Run Selected Text In Active Terminal`
+3. 或配置快捷键：
+
+```jsonc
+// keybindings.json
+{
+  "key": "cmd+enter",
+  "command": "workbench.action.terminal.runSelectedText",
+  "when": "editorTextFocus"
+}
+```
+
+### 快速跳转
+
+- **从终端跳转到文件**：`Cmd+点击` 路径名（如 `/src/app.tsx:10`）
+- **从错误跳转到代码**：`Cmd+点击` 编译错误
+
+## Tasks：将命令与项目绑定
+
+与其每次都手动输入命令，不如用 Tasks 保存：
+
+```jsonc
+// .vscode/tasks.json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Dev Server",
+      "type": "npm",
+      "script": "dev",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Run Tests",
+      "type": "npm",
+      "script": "test",
+      "group": "test"
+    },
+    {
+      "label": "Build",
+      "type": "npm",
+      "script": "build",
+      "group": "build"
+    }
+  ]
+}
+```
+
+运行方式：`Cmd+Shift+P` → `Tasks: Run Task` → 选择对应任务。
+
+## macOS 独有的终端技巧
+
+### iTerm2 集成
+
+如果你习惯用 iTerm2，可以配置 VS Code 使用 iTerm2 的配置文件：
+
+```jsonc
+{
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.env.osx": {
+    "ITERM_PROFILE": "Default"
+  }
+}
+```
+
+### 在终端中调用 VS Code 功能
+
+```bash
+# 查看版本
+code --version
+
+# 列出所有扩展
+code --list-extensions
+
+# 安装扩展
+code --install-extension esbenp.prettier-vscode
+
+# 打开并等待窗口关闭（用于脚本）
+code --wait
+```
+
+## 常见问题
+
+### 终端显示乱码？
+
+```jsonc
+{
+  "terminal.integrated.gpuAcceleration": "off",
+  "terminal.integrated.shellIntegration.enabled": false
+}
+```
+
+### 终端 PATH 和 Shell 不一致？
+
+确保 Shell 的配置文件（`~/.zshrc`）在大括号包裹的环境设置中正确加载。
+
+### 如何清理终端历史？
+
+`Cmd+K` 清除当前终端内容。关闭终端 Tab 再创建新的也可以。
+
+## 下一步
+
+- [Git 集成](/docs/06-git-integration) — VS Code 中的版本控制
+- [调试技巧](/docs/07-debugging) — 高效 Debug

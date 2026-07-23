@@ -1,0 +1,2 @@
+- [部署信息](vscode-guide-deployment.md) — 网站地址、技术栈、内容结构
+- [Superpowers 内容](vscode-guide-superpowers.md) — AI 工作流框架说明

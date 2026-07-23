@@ -1,0 +1,320 @@
+export const meta = {
+  title: 'Tasks 自动化',
+  description: '用 Tasks 运行脚本、编译、Lint 自动化',
+  order: 10,
+  tags: ['进阶'],
+}
+
+VS Code Tasks 让你在编辑器内直接运行构建脚本、测试、部署命令，省去手动切换终端输入命令的麻烦。
+
+## 什么是 Tasks
+
+Tasks 是 VS Code 的任务运行系统，它能：
+
+- **运行 npm/pnpm/yarn 脚本**
+- **执行 Shell 命令**
+- **运行编译器、Linter、测试框架**
+- **监听文件变更自动触发**
+- **解析输出中的错误并跳转到对应文件**
+
+## 快速体验
+
+无需编写任何配置文件，VS Code 会自动检测项目中的任务：
+
+1. `F1` → `Tasks: Run Task`
+2. 你会看到自动检测到的命令：
+   ```
+   ┌─────────────────────────────────┐
+   │ npm: dev                        │
+   │ npm: build                      │
+   │ npm: test                       │
+   │ npm: lint                       │
+   └─────────────────────────────────┘
+   ```
+3. 选择一个即可运行
+
+## 配置 tasks.json
+
+在项目根目录创建 `.vscode/tasks.json`：
+
+### 基础示例
+
+```jsonc
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Dev Server",
+      "type": "npm",
+      "script": "dev",
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}
+```
+
+### 完整配置
+
+```jsonc
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "启动开发服务器",
+      "type": "shell",
+      "command": "npm run dev",
+      "group": "build",
+      "presentation": {
+        "echo": true,         // 显示执行的命令
+        "reveal": "always",   // 运行任务时切换到终端
+        "focus": false,       // 是否聚焦到终端
+        "panel": "dedicated", // 专用面板 | shared | new
+        "showReuseMessage": true,
+        "clear": false        // 运行前不清屏
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "测试全部",
+      "type": "shell",
+      "command": "npm test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"        // 每次都新建终端
+      }
+    }
+  ]
+}
+```
+
+## Task 类型
+
+### npm 任务
+
+```jsonc
+{
+  "label": "Build",
+  "type": "npm",
+  "script": "build",     // package.json 中的 scripts
+  "group": "build",
+  "problemMatcher": ["$tsc"]  // 自动解析 TypeScript 错误
+}
+```
+
+### Shell 任务
+
+```jsonc
+{
+  "label": "Deploy",
+  "type": "shell",
+  "command": "rsync -avz --delete ./dist/ user@server:/var/www/",
+  "problemMatcher": [],
+  "dependsOn": ["Build"]  // 先构建再部署
+}
+```
+
+### 监听模式 (Watch)
+
+```jsonc
+{
+  "label": "Watch TypeScript",
+  "type": "npm",
+  "script": "build:watch",
+  "isBackground": true,         // 后台运行
+  "problemMatcher": "$tsc-watch"
+}
+```
+
+### 组合任务
+
+```jsonc
+{
+  "label": "Full Check",
+  "dependsOn": [
+    "Lint",
+    "Type Check",
+    "Test"
+  ],
+  "dependsOrder": "parallel"    // 并行运行 | sequence
+}
+```
+
+## Problem Matcher
+
+Problem Matcher 能解析命令输出的错误信息，自动跳转到源代码：
+
+```jsonc
+{
+  "label": "Build with errors",
+  "type": "shell",
+  "command": "tsc",
+  "problemMatcher": {
+    "owner": "typescript",
+    "source": "ts",
+    "severity": "error",
+    "pattern": [
+      {
+        "regexp": "^(.+)\\((\\d+),(\\d+)\\):\\s+(error|warning|info)\\s+(TS\\d+):\\s+(.*)$",
+        "file": 1,
+        "line": 2,
+        "column": 3,
+        "severity": 4,
+        "code": 5,
+        "message": 6
+      }
+    ]
+  }
+}
+```
+
+**内置 Problem Matchers：**
+- `$tsc` — TypeScript 编译器
+- `$tsc-watch` — TypeScript 监听模式
+- `$eslint-compact` — ESLint compact 格式
+- `$eslint-stylish` — ESLint stylish 格式
+- `$gcc` — GCC 编译错误
+- `$lessc` — Less 编译器
+
+## 常用 Task 模板
+
+### Node.js 项目
+
+```jsonc
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Dev",
+      "type": "npm",
+      "script": "dev",
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "panel": "dedicated" }
+    },
+    {
+      "label": "Build",
+      "type": "npm",
+      "script": "build",
+      "group": "build",
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "Test",
+      "type": "npm",
+      "script": "test",
+      "group": "test",
+      "presentation": { "panel": "dedicated" }
+    },
+    {
+      "label": "Lint",
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": ["$eslint-compact"],
+      "group": "build"
+    }
+  ]
+}
+```
+
+### Python 项目
+
+```jsonc
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "python -m pytest",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint",
+      "type": "shell",
+      "command": "flake8 src/",
+      "problemMatcher": []
+    }
+  ]
+}
+```
+
+### Go 项目
+
+```jsonc
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "go build ./...",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Test",
+      "type": "shell",
+      "command": "go test ./... -v",
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}
+```
+
+## 快捷键绑定
+
+推荐绑定常用任务快捷键：
+
+```jsonc
+// keybindings.json
+[
+  {
+    "key": "cmd+shift+b",
+    "command": "workbench.action.tasks.build"
+  },
+  {
+    "key": "cmd+shift+t",
+    "command": "workbench.action.tasks.test"
+  },
+  {
+    "key": "cmd+shift+r",
+    "command": "workbench.action.tasks.reRunTask"
+  }
+]
+```
+
+## 最佳实践
+
+1. **设置默认构建任务** — 让 `Cmd+Shift+B` 直接运行最常用的任务
+2. **使用 Problem Matcher** — 编译错误自动跳转到源代码位置
+3. **组合任务清理+构建** — `dependsOn` 串联多个步骤
+4. **并行运行独立任务** — Lint 和 Type Check 可以同时跑
+5. **Task 加终端标题** — presentation 中的 `panel: "dedicated"` 避免混淆
+
+### 一个完整的 CI 检查 Task
+
+```jsonc
+{
+  "label": "CI Check",
+  "dependsOn": ["Lint", "Type Check", "Test", "Build"],
+  "dependsOrder": "parallel",
+  "presentation": {
+    "panel": "dedicated",
+    "group": "ci"
+  }
+}
+```
+
+## 下一步
+
+- [远程开发](/docs/11-remote-development) — SSH Remote、Dev Containers
+- [Superpowers AI 工作流](/docs/13-superpowers) — AI 驱动的工作流

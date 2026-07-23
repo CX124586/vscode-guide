@@ -1,0 +1,176 @@
+export const meta = {
+  title: '扩展生态',
+  description: '精选扩展推荐与配置最佳实践',
+  order: 9,
+  tags: ['进阶'],
+}
+
+VS Code 的强大很大程度上来自其丰富的扩展生态。以下按类别推荐经过验证的扩展：
+
+## 扩展管理
+
+| 操作 | 快捷键 |
+|------|--------|
+| 打开扩展面板 | `Cmd+Shift+X` |
+| 搜索扩展 | 在扩展面板搜索框输入 |
+| 安装扩展 | 点击 Install |
+| 卸载扩展 | 右键 → Uninstall |
+| 禁用扩展 | 右键 → Disable |
+| 从命令行安装 | `code --install-extension <id>` |
+
+### 批量安装
+
+你可以通过命令行批量安装常用扩展：
+
+```bash
+# 一键安装推荐扩展
+code --install-extension esbenp.prettier-vscode
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension bradlc.vscode-tailwindcss
+# ...
+```
+
+## 必装扩展
+
+### 🎨 代码格式化与质量
+
+| 扩展 | ID | 用途 |
+|------|-----|------|
+| **Prettier** | `esbenp.prettier-vscode` | 代码格式化标配 |
+| **ESLint** | `dbaeumer.vscode-eslint` | JavaScript/TypeScript 代码检查 |
+| **Error Lens** | `usernamehw.errorlens` | 内联显示错误和警告 |
+
+### ⚡ 开发效率
+
+| 扩展 | ID | 用途 |
+|------|-----|------|
+| **GitLens** | `eamodio.gitlens` | Git 超级增强 |
+| **Path Intellisense** | `christian-kohler.path-intellisense` | 路径自动补全 |
+| **npm Intellisense** | `christian-kohler.npm-intellisense` | npm 包名补全 |
+| **Import Cost** | `wix.vscode-import-cost` | 显示导入包大小 |
+
+### 🎯 语言支持
+
+| 语言 | 推荐扩展 |
+|------|---------|
+| **Python** | `ms-python.python` + `ms-python.vscode-pylance` |
+| **Go** | `golang.go` |
+| **Rust** | `rust-lang.rust-analyzer` |
+| **SQL** | `cweijan.vscode-mysql-client2` |
+| **Docker** | `ms-azuretools.vscode-docker` |
+| **YAML** | `redhat.vscode-yaml` |
+
+### 🎨 主题与图标
+
+| 扩展 | 用途 |
+|------|------|
+| **One Dark Pro** | 经典 Atom 配色 |
+| **GitHub Theme** | GitHub 官方主题 |
+| **Catppuccin** | 柔和多彩配色 |
+| **Material Icon Theme** | 文件图标美化 |
+| **vscode-icons** | 另一款图标主题 |
+
+## 按工作流推荐
+
+### 前端开发者
+
+```bash
+ext install esbenp.prettier-vscode
+ext install dbaeumer.vscode-eslint
+ext install bradlc.vscode-tailwindcss
+ext install christian-kohler.path-intellisense
+ext install wix.vscode-import-cost
+ext install formulahendry.auto-rename-tag
+```
+
+### Python 数据科学
+
+```bash
+ext install ms-python.python
+ext install ms-python.vscode-pylance
+ext install ms-toolsai.jupyter
+ext install njpwerner.autodocstring
+ext install streetsidesoftware.code-spell-checker
+```
+
+### Go 开发者
+
+```bash
+ext install golang.go
+ext install premparihar.gotestexplorer
+ext install jeff-hykin.better-go-syntax
+```
+
+### 全栈通用
+
+```bash
+ext install eamodio.gitlens
+ext install ms-azuretools.vscode-docker
+ext install redhat.vscode-yaml
+ext install mechatroner.rainbow-csv
+ext install gruntfuggly.todo-tree
+```
+
+## 扩展配置示例
+
+### Prettier
+
+```jsonc
+// .prettierrc
+{
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "arrowParens": "always"
+}
+```
+
+### ESLint
+
+```jsonc
+// settings.json
+{
+  "eslint.validate": ["javascript", "typescript", "javascriptreact", "typescriptreact"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
+}
+```
+
+## 扩展性能管理
+
+装太多扩展会影响 VS Code 的启动速度和运行流畅度：
+
+```jsonc
+// settings.json
+{
+  // 只在特定语言下启用某些扩展
+  "python.disableInstallationCheck": true,
+
+  // 禁用不常用的扩展
+  "extensions.ignoreRecommendations": false,
+
+  // 查看启动时间：Cmd+Shift+P → Developer: Show Running Extensions
+}
+```
+
+**查看扩展对性能的影响：**
+
+运行 `> Developer: Show Running Extensions`，可以看到每个扩展的启动耗时。
+
+## 扩展推荐导出与分享
+
+```bash
+# 导出已安装列表
+code --list-extensions > vscode-extensions.txt
+
+# 从文件批量安装
+cat vscode-extensions.txt | xargs -L 1 code --install-extension
+```
+
+## 下一步
+
+- [Tasks 自动化](/docs/10-tasks-automation) — 用 Tasks 实现工作流自动化
+- [远程开发](/docs/11-remote-development) — SSH Remote 远程开发

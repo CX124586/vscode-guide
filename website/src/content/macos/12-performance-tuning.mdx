@@ -1,0 +1,293 @@
+export const meta = {
+  title: '性能调优',
+  description: '让 VS Code 在大项目中保持流畅',
+  order: 12,
+  tags: ['高阶'],
+}
+
+项目变大、文件变多后，VS Code 可能会变慢。以下优化策略能显著提升性能。
+
+## 诊断性能问题
+
+### 查看性能数据
+
+```bash
+Cmd+Shift+P → Developer: Show Running Extensions
+```
+
+这个命令会显示每个扩展的启动耗时。
+
+```
+┌─────────────────────────────────────┐
+│  Running Extensions                 │
+├─────────────────────────────────────┤
+│  ESList                  280ms      │
+│  Prettier                150ms      │
+│  GitLens                 890ms      │
+│  Tailwind CSS            420ms      │
+│  Python                  1,200ms    │
+│  vscode-icons            310ms      │
+│  Total Startup Time:     3,250ms   │
+└─────────────────────────────────────┘
+```
+
+### 启动分析
+
+```bash
+code --status          # 查看 VS Code 进程状态
+code --prof-startup    # 启动时生成 CPU profile
+```
+
+## 文件管理优化
+
+### 排除不必要的文件
+
+```jsonc
+{
+  // 文件资源管理器忽略
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/coverage": true,
+    "**/.turbo": true
+  },
+
+  // 搜索排除
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/dist": true,
+    "**/.next": true,
+    "**/out": true,
+    "**/coverage": true,
+    "**/.turbo": true
+  },
+
+  // 文件监听排除（减少 CPU 占用）
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/coverage/**": true,
+    "**/.turbo/**": true
+  }
+}
+```
+
+## 编辑器设置优化
+
+```jsonc
+{
+  // 关闭语义化高亮（大文件中明显提升性能）
+  "editor.semanticHighlighting.enabled": false,
+
+  // 减少缩略图渲染
+  "editor.minimap.maxColumn": 80,
+  "editor.minimap.renderCharacters": false,
+
+  // 关闭管道的代码透镜（GitLens 等）
+  "editor.codeLens": false,
+
+  // 减少链接检测
+  "editor.links": false,
+
+  // 参数提示
+  "editor.parameterHints.enabled": false,
+
+  // 关闭自动换行
+  "editor.wordWrap": "off",
+
+  // 减少光标的平滑淡入
+  "editor.cursorSmoothCaretAnimation": "off",
+
+  // 关闭括号对着色（大文件中性能消耗大）
+  "editor.bracketPairColorization.enabled": false,
+
+  // 减少渲染空白
+  "editor.renderWhitespace": "selection",
+
+  // 关闭悬停提示延迟
+  "editor.hover.delay": 500
+}
+```
+
+## 扩展优化
+
+### 懒加载扩展
+
+在 `settings.json` 中按语言只激活某些扩展：
+
+```jsonc
+{
+  // 只在处理 Python 时激活
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  // 用 extensions.json 控制工作区扩展
+}
+```
+
+### 推荐的工作区扩展配置
+
+```jsonc
+// .vscode/extensions.json
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ],
+  "unwantedRecommendations": [
+    "hookyqr.beautify",
+    "ms-vscode.vscode-typescript-next"
+  ]
+}
+```
+
+### 禁用不必要的扩展
+
+禁用以下常用但可能影响性能的扩展（按需启用）：
+
+| 扩展 | 替代方案 |
+|------|---------|
+| GitLens | 只在需要时启用 |
+| Error Lens | 保存文件时查看问题面板 |
+| Import Cost | 仅在性能审查时启用 |
+| Bracket Pair Colorizer | 内置功能已支持（开启后仍慢则关闭） |
+
+## Git 性能优化
+
+```jsonc
+{
+  // 限制 Git 操作
+  "git.autofetch": false,
+  "git.enableStatus": true,
+  "git.countBadge": "off",
+  "git.decorations.enabled": false,
+
+  // 仅对当前打开的文件启用 Git 检测
+  "gitlens.currentLine.enabled": false,
+  "gitlens.codeLens.enabled": false,
+
+  // 关闭自动刷新
+  "git.autorefresh": false,
+  "git.refreshInterval": 180
+}
+```
+
+## 大项目最佳实践
+
+### Monorepo 优化
+
+对于包含大量包的 monorepo：
+
+```jsonc
+{
+  // 只加载工作区中指定的目录
+  "workspace.workspaceFolder": "/packages/app",
+
+  // 或使用 multi-root workspace
+  // 在 .code-workspace 中只添加需要的子目录
+}
+```
+
+```jsonc
+// project.code-workspace
+{
+  "folders": [
+    { "name": "app", "path": "packages/app" },
+    { "name": "shared", "path": "packages/shared" }
+  ],
+  "settings": {
+    "files.exclude": {
+      "packages/*/node_modules": true
+    }
+  }
+}
+```
+
+### 使用 VS Code 的排除模式
+
+在 1.85+ 版本中，VS Code 引入了一种新的排除语法：
+
+```jsonc
+{
+  "files.exclude": {
+    "**/node_modules": true,
+    "node_modules": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "node_modules": true
+  }
+}
+```
+
+### 按需打开文件
+
+- 使用 `Cmd+P` 按文件名搜索，而不是在侧边栏浏览
+- 使用 `Ctrl+Tab` 快速切换最近文件
+- 关闭不需要的标签页（`Cmd+W`）
+
+## macOS 系统级优化
+
+```bash
+# 增加文件监听上限（默认 256，经常不够用）
+echo 'fs.inotify.max_user_watches=524288' | sudo tee -a /etc/sysctl.conf
+
+# macOS 不需要这个（Linux/Windows WSL 需要）
+# 实际上 macOS 不需要 inotify 设置，这是 Linux 的
+```
+
+macOS 下，文件监听已经通过 `FSEvents` 处理，通常不需要额外配置。如果遇到"Scarce file handle"错误：
+
+```jsonc
+{
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true
+  }
+}
+```
+
+## 启动加速技巧
+
+```jsonc
+{
+  // 关闭不用的工作台功能
+  "workbench.startupEditor": "none",
+  "workbench.welcomePage.enabled": false,
+  "window.titleBarStyle": "custom",  // macOS 原生标题栏
+  "window.newWindowDimensions": "maximized",
+
+  // 减少扩展自动更新的网络请求
+  "extensions.autoCheckUpdates": false,
+  "extensions.autoUpdate": false,
+  "update.mode": "none"
+}
+```
+
+## 性能检查清单
+
+- [ ] 运行 `Developer: Show Running Extensions`，识别高延迟扩展
+- [ ] 配置 `files.exclude` 和 `files.watcherExclude`
+- [ ] 按语言选择性激活扩展
+- [ ] 大项目使用 multi-root workspace
+- [ ] 关闭不必要的语义化高亮和括号着色
+- [ ] 定期清理未使用的扩展
+- [ ] 最小化 `editor.minimap.renderCharacters`
+- [ ] 关闭 `editor.codeLens` 和 `editor.parameterHints`
+
+## 下一步
+
+- [Superpowers AI 工作流](/docs/13-superpowers) — AI 驱动的开发工作流

@@ -1,0 +1,241 @@
+export const meta = {
+  title: '编辑超能力',
+  description: '多光标、智能提示、Snippet、Emmet 等让你飞起来的编辑技巧',
+  order: 4,
+  tags: ['基础'],
+}
+
+## 多光标编辑
+
+多光标是 VS Code 最强大的编辑功能之一，能让你同时在多个位置输入。
+
+### 四种激活方式
+
+**方式一：选中匹配（最常用）**
+```javascript
+// 假如你想把下面所有的 name 改成 title
+const user = { name: 'Alice', age: 25 }
+const admin = { name: 'Bob', age: 30 }
+// 1. 选中 "name"
+// 2. 按 Cmd+D (重复按选下一个)
+// 3. 直接输入 "title"
+```
+
+**方式二：一键全选所有匹配**
+```javascript
+// 把下面所有的 var 改成 const
+var a = 1
+var b = 2
+var c = 3
+// 1. 选中 "var"
+// 2. 按 Cmd+Shift+L
+// 3. 输入 "const"
+```
+
+**方式三：任意添加光标**
+```bash
+# 在最前面加序号
+苹果
+香蕉
+橘子
+# Option+点击 每行行首 → 输入 "1. " "2. " "3. "
+```
+
+**方式四：列选择**
+```bash
+# 批量删除前几列
+# Option+Shift+拖拽 → 矩形选区
+# 或 Option+Cmd+↑/↓ 逐行添加
+```
+
+### 多光标实战场景
+
+| 场景 | 操作 |
+|------|------|
+| 批量重命名局部变量 | `Cmd+D` 逐个选中 |
+| 批量重命名全部变量 | `F2` （真正的重构重命名） |
+| 给多行加前缀/后缀 | `Option+点击` 多行 |
+| 对齐多行等号 | 列选择后编辑 |
+
+> 💡 `F2` 是真正的重构重命名，它知道作用域，比 `Cmd+Shift+L` 更安全。
+
+## 智能代码补全 (IntelliSense)
+
+VS Code 内置了强大的智能补全系统：
+
+```
+输入 app.  → 自动弹出 suggestion:
+  - appendChild
+  - append
+  - apply
+  ...
+```
+
+### 使用技巧
+
+| 操作 | 说明 |
+|------|------|
+| 触发补全 | `Ctrl+Space` |
+| 触发参数提示 | `Cmd+Shift+Space` |
+| 快速预览 | 选中建议时按 `Cmd+Shift+Space` 看文档 |
+| 触发建议 | 输入 `.` `(` `<` 等触发字符 |
+| 滚动建议 | `Ctrl+N/P` 上下移动 |
+
+**语言特定的 IntelliSense：**
+
+- **TypeScript/JavaScript**：内置完整类型提示
+- **Python**：需安装 Pylance 扩展
+- **Go**：安装 Go 扩展
+- **Rust**：安装 rust-analyzer 扩展
+
+## 代码片段 (Snippets)
+
+Snippets 是预定义的代码模板，用 `Tab` 触发展开。
+
+### 内置 Snippets
+
+在 JavaScript / TypeScript 文件中试试：
+
+```typescript
+// 输入 for → 选择 forEach 循环
+// 输入 clg → 展开为 console.log()
+// 输入 imp → import module from 'module'
+// 输入 fun → function name() {}
+```
+
+### 自定义 Snippet
+
+通过 `settings.json` 创建自己的 Snippet：
+
+```jsonc
+// Code/User/snippets/javascript.json
+{
+  "Log with variable name": {
+    "prefix": "logv",
+    "body": ["console.log('$1:', $1)"],
+    "description": "带变量名的 console.log"
+  },
+  "Arrow function": {
+    "prefix": "af",
+    "body": ["const $1 = ($2) => {", "\t$3", "}"],
+    "description": "Arrow function"
+  }
+}
+```
+
+`$1`, `$2`, `$3` 是 Tab 跳转位，`$0` 是最终位置。
+
+### 全局 Snippet 文件位置
+
+```bash
+# macOS
+~/Library/Application Support/Code/User/snippets/
+```
+
+> 💡 建议从常用的 3-5 个自定义 Snippet 开始，别一上来就想写全。
+
+## Emmet：HTML/CSS 极速编写
+
+Emmet 内置于 VS Code，无需额外安装。
+
+### HTML 示例
+
+```html
+<!-- 输入: div.container>ul.list>li*3>a[href=#]{项目$}
+     按 Tab -->
+<div class="container">
+  <ul class="list">
+    <li><a href="#">项目1</a></li>
+    <li><a href="#">项目2</a></li>
+    <li><a href="#">项目3</a></li>
+  </ul>
+</div>
+```
+
+### CSS 示例
+
+```css
+/* 输入: m10 → margin: 10px */        /* 数字 + 单位缩写 */
+/* 输入: p20-30 → padding: 20px 30px */ /* 多值 */
+/* 输入: fz16 → font-size: 16px */      /* 属性缩写 */
+/* 输入: bgc#333 → background-color: #333 */
+```
+
+### Emmet 速查
+
+| 缩写 | 展开结果 |
+|------|---------|
+| `!` | HTML5 文档模板 |
+| `>` | 子元素 |
+| `+` | 同级元素 |
+| `*N` | 重复 N 次 |
+| `^` | 向上级 |
+| `$` | 递增编号 |
+
+## 格式化代码
+
+VS Code 内置强大的格式化能力：
+
+| 操作 | 快捷键 |
+|------|--------|
+| 格式化文档 | `Shift+Option+F` |
+| 格式化选中 | `Cmd+K Cmd+F` |
+| 自动格式化保存 | 在 settings.json 中设置 `"editor.formatOnSave": true` |
+
+### 推荐的格式化配置
+
+```jsonc
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[python]": { "editor.defaultFormatter": "ms-python.python" }
+}
+```
+
+## 代码折叠
+
+```javascript
+// 大函数或长代码块用折叠管理
+function longFunction() {
+  // ... 很多代码
+  // 点击行号左侧的 ▼ 折叠
+  // 或按 Cmd+Shift+[ 折叠
+}
+
+// Cmd+K Cmd+0 → 折叠全部
+// Cmd+K Cmd+J → 展开全部
+```
+
+## 悬停预览 (Hover)
+
+多数语言支持悬停查看类型和文档：
+
+- 鼠标悬停在变量上 → 查看类型
+- 悬停在函数上 → 查看签名和文档
+- `Cmd+悬停` → 直接跳转到定义
+
+## 重构操作
+
+| 操作 | 快捷键 |
+|------|--------|
+| 重命名符号 | `F2` |
+| 提取函数 | `Cmd+Shift+R` → 选择重构 |
+| 提取变量 | 选中表达式 → 💡 (Quick Fix) |
+| 更改所有引用 | `Shift+F12` 查看引用 → 右键批量修改 |
+
+## 小技巧合集
+
+1. **Cmd+Shift+P 后输入 >** — 所有可执行命令
+2. **Cmd+P 后输入 @** — 跳转到当前文件的符号
+3. **Cmd+P 后输入 :** — 跳转到行号
+4. **选中文字后按 Cmd+Shift+P** — 在选中文字上执行命令
+5. **Cmd+K Z** — Zen Mode (全屏专注)
+6. **Option+Shift+拖拽** — 列编辑模式
+7. **Cmd+Shift+\** — 在匹配括号间跳转
+
+## 下一步
+
+- [集成终端](/docs/05-integrated-terminal) — 在 VS Code 中用终端完成命令行操作
+- [Git 集成](/docs/06-git-integration) — 用 VS Code 完成 Git 版本控制

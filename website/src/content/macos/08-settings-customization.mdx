@@ -1,0 +1,227 @@
+export const meta = {
+  title: '设置深度定制',
+  description: 'settings.json、快捷键绑定、工作区配置',
+  order: 8,
+  tags: ['进阶'],
+}
+
+## 设置体系
+
+VS Code 的设置分为三个层级，优先级从高到低：
+
+```
+工作区设置 (.vscode/settings.json)     ← 最高优先级（项目专属）
+├── 远程设置                           ← SSH/容器远程时生效
+├── 用户设置 (settings.json)           ← 全局默认
+    └── 默认设置                       ← VS Code 内置
+```
+
+> 💡 工作区设置会覆盖用户设置。项目团队可以用 `.vscode/settings.json` 统一编辑器行为。
+
+## 打开设置
+
+| 方式 | 操作 |
+|------|------|
+| 图形界面 | `Cmd+,` |
+| 命令面板 | `Cmd+Shift+P` → `Preferences: Open Settings (JSON)` |
+| 直接打开文件 | 用户：`~/Library/Application Support/Code/User/settings.json` |
+| 工作区 | 项目下 `.vscode/settings.json` |
+
+## 必配设置
+
+```jsonc
+{
+  // === 编辑器基础 ===
+  "editor.fontSize": 15,
+  "editor.fontFamily": "'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace",
+  "editor.fontLigatures": true,                // 启用连字（-> → →）
+  "editor.tabSize": 2,
+  "editor.renderWhitespace": "boundary",       // 显示空格边界
+  "editor.minimap.enabled": true,
+  "editor.lineNumbers": "on",
+  "editor.wordWrap": "off",                    // 大文件建议关闭自动换行
+
+  // === 自动保存 ===
+  "files.autoSave": "afterDelay",              // delay 默认 1000ms
+  "files.autoSaveDelay": 1000,
+
+  // === 格式化 ===
+  "editor.formatOnSave": true,                 // 保存时自动格式化
+  "editor.formatOnPaste": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // === 代码补全 ===
+  "editor.suggestSelection": "first",
+  "editor.quickSuggestions": {
+    "strings": true                            // 字符串内也启用建议
+  },
+  "editor.acceptSuggestionOnCommitCharacter": true,
+
+  // === 括号和引号 ===
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.linkedEditing": true,                // 同步修改 HTML 标签对
+
+  // === 文件 ===
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/dist": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.next": true
+  },
+
+  // === 工作台 ===
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.startupEditor": "none",
+  "workbench.editor.enablePreview": false,     // 文件打开不预览模式
+  "window.commandCenter": true,                // 显示命令中心
+}
+```
+
+## 快捷键绑定
+
+```jsonc
+// keybindings.json
+// 路径：~/Library/Application Support/Code/User/keybindings.json
+[
+  // 常用操作
+  {
+    "key": "cmd+shift+n",
+    "command": "explorer.newFolder"
+  },
+  {
+    "key": "alt+cmd+t",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+`",
+    "command": "-workbench.action.terminal.toggleTerminal" // 减号 = 移除默认
+  },
+
+  // 用 cmd+e 替代 cmd+p（习惯 Sublime 的用户）
+  {
+    "key": "cmd+e",
+    "command": "workbench.action.quickOpen"
+  },
+
+  // 行操作
+  {
+    "key": "ctrl+shift+k",
+    "command": "editor.action.deleteLines"
+  }
+]
+```
+
+## 工作区设置最佳实践
+
+将以下配置放在项目的 `.vscode/settings.json` 中，团队成员共享：
+
+```jsonc
+// .vscode/settings.json
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "typescript.preferences.importModuleSpecifier": "shortest",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.tabSize": 4
+  }
+}
+```
+
+同时将 `.vscode/` 加入项目的 Git 跟踪（它默认会被 `.gitignore` 忽略）：
+
+```bash
+git add -f .vscode/settings.json
+```
+
+## 语言特定设置
+
+```jsonc
+{
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+```
+
+## 设置同步
+
+VS Code 支持使用 GitHub 账号跨设备同步设置：
+
+1. 点击左下角齿轮 ⚙️ → Turn on Settings Sync
+2. 选择要同步的内容：
+   - 设置 (Settings)
+   - 快捷键 (Keybindings)
+   - 扩展 (Extensions)
+   - 用户片段 (Snippets)
+   - UI 状态
+
+也可以手动备份配置：
+
+```bash
+# 备份配置文件
+cp -r ~/Library/Application\ Support/Code/User ~/dotfiles/vscode
+
+# 恢复
+ln -s ~/dotfiles/vscode ~/Library/Application\ Support/Code/User
+```
+
+## 进阶：Settings JSON 中的变量
+
+VS Code 设置支持以下占位符：
+
+| 变量 | 说明 | 示例值 |
+|------|------|--------|
+| `${workspaceFolder}` | 工作区路径 | `/Users/me/project` |
+| `${workspaceFolderBasename}` | 工作区文件夹名 | `project` |
+| `${userHome}` | 用户目录 | `/Users/me` |
+| `${env:NAME}` | 环境变量 | `${env:HOME}` |
+| `${config:setting}` | 其他设置值 | `${config:editor.fontSize}` |
+
+## 推荐交给工作区设置的项
+
+适合放在 `.vscode/settings.json`：
+- 格式化规则（Prettier/ESLint）
+- 语言特定配置
+- 文件排除规则
+- 编辑器缩进
+
+适合放在用户设置：
+- 字体/字号/主题
+- 个人快捷键
+- 自动保存行为
+- Minimap 等 UI 偏好
+
+## 下一步
+
+- [扩展生态](/docs/09-extensions) — 精选扩展推荐
+- [Tasks 自动化](/docs/10-tasks-automation) — 任务自动化
