@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 340" fill="none">
+  <!-- VS Code Panel Area -->
+  <rect x="0" y="0" width="580" height="340" rx="6" fill="#1e1e1e"/>
+
+  <!-- Panel Tab Bar -->
+  <rect x="0" y="0" width="580" height="32" fill="#252526"/>
+  <rect x="0" y="0" width="100" height="32" fill="#1e1e1e"/>
+  <text x="14" y="21" fill="#fff" font-size="11" font-family="system-ui">终端</text>
+  <text x="110" y="21" fill="#888" font-size="11" font-family="system-ui">调试控制台</text>
+  <text x="198" y="21" fill="#888" font-size="11" font-family="system-ui">问题</text>
+  <text x="240" y="21" fill="#888" font-size="11" font-family="system-ui">输出</text>
+
+  <!-- Terminal Tabs -->
+  <rect x="0" y="32" width="580" height="28" fill="#2d2d2d"/>
+  <rect x="12" y="34" width="120" height="24" rx="3" fill="#1e1e1e"/>
+  <text x="22" y="51" fill="#ddd" font-size="10" font-family="system-ui">🔵 PowerShell</text>
+  <rect x="136" y="34" width="80" height="24" rx="3" fill="#2d2d2d"/>
+  <text x="144" y="51" fill="#888" font-size="10" font-family="system-ui">CMD</text>
+  <rect x="220" y="34" width="80" height="24" rx="3" fill="#2d2d2d"/>
+  <text x="228" y="51" fill="#888" font-size="10" font-family="system-ui">Git Bash</text>
+
+  <!-- Terminal Content -->
+  <g transform="translate(14, 75)" font-family="monospace" font-size="12">
+    <text x="0" y="12" fill="#569cd6">Windows PowerShell</text>
+    <text x="0" y="28" fill="#888">Copyright (C) Microsoft Corporation. All rights reserved.</text>
+
+    <text x="0" y="52" fill="#888">PS C:\Users\dev\project></text>
+    <text x="120" y="52" fill="#d4d4d4">npm create vite@latest</text>
+
+    <text x="0" y="72" fill="#888">PS C:\Users\dev\project></text>
+    <text x="120" y="72" fill="#d4d4d4">cd my-app</text>
+
+    <text x="0" y="92" fill="#888">PS C:\Users\dev\project\my-app></text>
+    <text x="156" y="92" fill="#d4d4d4">npm install</text>
+    <!-- Spinner -->
+    <rect x="156" y="106" width="12" height="12" rx="6" fill="none" stroke="#888" stroke-width="2"/>
+    <path d="M162 108 A6 6 0 0 1 166 112" stroke="#4ec9b0" stroke-width="2" fill="none"/>
+
+    <text x="0" y="120" fill="#888">PS C:\Users\dev\project\my-app></text>
+    <text x="156" y="120" fill="#d4d4d4">code .</text>
+
+    <text x="0" y="148" fill="#888">PS C:\Users\dev\project\my-app></text>
+    <!-- Blinking cursor -->
+    <rect x="120" y="138" width="2" height="14" fill="#aeafad"/>
+
+    <text x="0" y="172" fill="#6a9955"># 当前 Shell: PowerShell 7</text>
+    <text x="0" y="188" fill="#6a9955"># 按 Ctrl+Shift+5 拆分终端 / Ctrl+` 切换</text>
+  </g>
+
+  <!-- Split terminal indicator -->
+  <g transform="translate(320, 36)">
+    <rect x="0" y="0" width="2" height="26" fill="#333"/>
+    <text x="10" y="18" fill="#888" font-size="10" font-family="system-ui">2: CMD</text>
+  </g>
+
+  <!-- Dropdown arrow -->
+  <g transform="translate(540, 36)">
+    <polygon points="0,8 8,0 16,8" fill="#888"/>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(14, 280)">
+    <text x="0" y="12" fill="#6a9955" font-size="10" font-family="system-ui">💡 在 settings.json 中配置默认 Shell：terminal.integrated.defaultProfile.windows</text>
+  </g>
+
+  <!-- Shell profiles hint -->
+  <g transform="translate(14, 305)">
+    <rect x="0" y="0" width="550" height="24" rx="3" fill="#2d2d2d"/>
+    <text x="10" y="16" fill="#888" font-size="10" font-family="system-ui">可用的 Shell 配置文件: PowerShell | CMD | Git Bash | WSL</text>
+  </g>
+</svg>
