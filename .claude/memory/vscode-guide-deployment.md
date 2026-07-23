@@ -1,6 +1,6 @@
 ---
 name: vscode-guide-deployment
-description: VS Code 使用指南网站部署信息（完整版）
+description: VS Code 使用指南 — 项目完整状态
 metadata:
   type: project
 ---
@@ -14,18 +14,20 @@ metadata:
 - macOS：13 篇（入门→高阶，含 Superpowers AI 工作流）
 - Windows：12 篇（关键差异 + 引用 macOS 详文）
 
-## 已实现功能
-- ✅ 29 篇教程覆盖 macOS + Windows
-- ✅ 双平台路由 /docs/macos/* /docs/windows/*
-- ✅ 侧边栏平台切换 + 文章搜索
-- ✅ TOC 浮动目录（滚动高亮）
-- ✅ SVG 图示（界面布局/调试器/Git面板/多光标）
-- ✅ 首页数据统计（文章数/字数/更新日期）
-- ✅ 暗色模式（滚动条/SVG/blockquote/h2边框适配）
-- ✅ 中文排版优化（justify对齐/行高/分割线）
-- ✅ PWA（离线缓存 + 可安装 + manifest + Service Worker）
-- ✅ 反馈入口（GitHub 编辑 + 提 Issue）
-- ✅ 自动部署（Git push → Vercel）
+## 设计资源
+- SVG 图示：interface-layout, debugger-panel, git-panel, multicursor,
+            windows-installer, windows-terminal, wsl-architecture
+- 截图脚本：`bash scripts/screenshots.sh` 创建截图用临时项目
+- 视频占位：VideoEmbed 组件嵌入 5 个关键页面
 
-## 静态导出
-`npm run build` → `out/`（3.6MB，可直接上传 OSS/CDN）
+## 功能清单
+- [x] 29 篇教程覆盖 macOS + Windows
+- [x] 双平台路由 + 侧边栏切换
+- [x] 文章搜索 + TOC 浮动目录
+- [x] SVG 图示 + 视频占位
+- [x] 首页统计 + 暗色模式 + 中文排版
+- [x] PWA（离线缓存 + 可安装 + Service Worker）
+- [x] 反馈入口（GitHub 编辑 + 提 Issue）
+- [x] 截图辅助脚本
+- [x] 自动部署（Git push → Vercel）
+- [x] 静态导出 3.6MB

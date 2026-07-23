@@ -25,6 +25,14 @@ export const platforms: Record<Platform, PlatformConfig> = {
     icon: '🍎',
     categories: [
       {
+        title: '🌟 零基础入门',
+        docs: [
+          { title: '从0开始：搭建你的AI助手', description: '超详细安装与配置教程，手把手跟着做', order: 0, tags: ['新手'], slug: 'b01-beginner-setup' },
+          { title: '第一次AI对话', description: '学会用AI帮你写东西、改东西、整理信息', order: 0, tags: ['新手'], slug: 'b02-first-ai-chat' },
+          { title: '职场案例库：直接可用的AI提示词', description: '写周报、翻译、总结、做表格…复制粘贴就能用', order: 0, tags: ['新手'], slug: 'b03-office-cases' },
+        ],
+      },
+      {
         title: '快速上手',
         docs: [
           { title: '安装与配置', description: '在 macOS 上安装 VS Code 并进行基础配置', order: 1, tags: ['入门'], slug: '01-installation' },
