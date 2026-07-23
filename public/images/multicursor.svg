@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" fill="none">
+  <rect width="500" height="280" rx="8" fill="#1e1e1e"/>
+
+  <!-- Before label -->
+  <text x="250" y="24" text-anchor="middle" fill="#888" font-size="11" font-family="system-ui">选中所有匹配 — Cmd+Shift+L / Ctrl+Shift+L</text>
+
+  <!-- Line 1 -->
+  <rect x="16" y="36" width="468" height="22" rx="3" fill="#2d2d2d"/>
+  <line x1="16" y1="48" x2="484" y2="48" stroke="#333" stroke-width="0.5"/>
+  <!-- Line 2 -->
+  <rect x="16" y="58" width="468" height="22" rx="3" fill="#2d2d2d"/>
+  <line x1="16" y1="70" x2="484" y2="70" stroke="#333" stroke-width="0.5"/>
+  <!-- Line 3 -->
+  <rect x="16" y="80" width="468" height="22" rx="3" fill="#2d2d2d"/>
+  <line x1="16" y1="92" x2="484" y2="92" stroke="#333" stroke-width="0.5"/>
+
+  <!-- Code Before -->
+  <g transform="translate(24, 48)" font-family="monospace" font-size="12">
+    <text x="0" y="8" fill="#6a9955">// 之前：手动一个个改</text>
+  </g>
+
+  <g transform="translate(24, 72)" font-family="monospace" font-size="13">
+    <text x="0" y="8" fill="#c586c0">const</text>
+    <text x="36" y="8" fill="#569cd6">name1</text>
+    <text x="80" y="8" fill="#d4d4d4">=</text>
+    <text x="92" y="8" fill="#ce9178">'Alice'</text>
+  </g>
+  <g transform="translate(24, 94)" font-family="monospace" font-size="13">
+    <text x="0" y="8" fill="#c586c0">const</text>
+    <text x="36" y="8" fill="#569cd6">name1</text>
+    <text x="80" y="8" fill="#d4d4d4">=</text>
+    <text x="92" y="8" fill="#ce9178">'Bob'</text>
+  </g>
+
+  <!-- Arrow -->
+  <g transform="translate(240, 120)">
+    <text x="0" y="16" text-anchor="middle" fill="#888" font-size="20">⬇</text>
+  </g>
+
+  <!-- After Header -->
+  <text x="250" y="156" text-anchor="middle" fill="#888" font-size="11" font-family="system-ui">多光标同时编辑 — 一次操作全部替换</text>
+
+  <!-- Line 1 After -->
+  <rect x="16" y="168" width="468" height="22" rx="3" fill="#2d2d2d"/>
+  <!-- Line 2 After -->
+  <rect x="16" y="190" width="468" height="22" rx="3" fill="#2d2d2d"/>
+  <!-- Line 3 After -->
+  <rect x="16" y="212" width="468" height="22" rx="3" fill="#2d2d2d"/>
+
+  <g transform="translate(24, 184)" font-family="monospace" font-size="13">
+    <!-- Cursor 1 -->
+    <rect x="36" y="-3" width="2" height="18" fill="#aeafad"/>
+    <text x="0" y="8" fill="#c586c0">const</text>
+    <text x="36" y="8" fill="#4fc1ff">user</text>
+    <text x="72" y="8" fill="#d4d4d4">=</text>
+    <text x="84" y="8" fill="#ce9178">'Alice'</text>
+  </g>
+  <g transform="translate(24, 206)" font-family="monospace" font-size="13">
+    <!-- Cursor 2 -->
+    <rect x="36" y="-3" width="2" height="18" fill="#aeafad"/>
+    <text x="0" y="8" fill="#c586c0">const</text>
+    <text x="36" y="8" fill="#4fc1ff">user</text>
+    <text x="72" y="8" fill="#d4d4d4">=</text>
+    <text x="84" y="8" fill="#ce9178">'Bob'</text>
+  </g>
+  <g transform="translate(24, 228)" font-family="monospace" font-size="13">
+    <!-- Cursor 3 -->
+    <rect x="36" y="-3" width="2" height="18" fill="#aeafad"/>
+    <text x="0" y="8" fill="#c586c0">const</text>
+    <text x="36" y="8" fill="#4fc1ff">user</text>
+    <text x="72" y="8" fill="#d4d4d4">=</text>
+    <text x="84" y="8" fill="#ce9178">'Charlie'</text>
+  </g>
+
+  <!-- Cursor highlight ring -->
+  <g transform="translate(36, 165)">
+    <rect x="-4" y="-4" width="10" height="26" rx="2" fill="none" stroke="#aeafad" stroke-width="1" opacity="0.5"/>
+  </g>
+  <g transform="translate(36, 187)">
+    <rect x="-4" y="-4" width="10" height="26" rx="2" fill="none" stroke="#aeafad" stroke-width="1" opacity="0.5"/>
+  </g>
+  <g transform="translate(36, 209)">
+    <rect x="-4" y="-4" width="10" height="26" rx="2" fill="none" stroke="#aeafad" stroke-width="1" opacity="0.5"/>
+  </g>
+
+  <!-- Instructions -->
+  <g transform="translate(16, 252)">
+    <text x="0" y="10" fill="#888" font-size="10" font-family="system-ui">💡 选中 name1 → 按 Ctrl+Shift+L / Cmd+Shift+L → 输入 user → 一次改完</text>
+  </g>
+</svg>

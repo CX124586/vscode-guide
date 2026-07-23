@@ -31,24 +31,15 @@ VS Code 会自动检测系统中的 Git。
 
 ### 面板结构
 
-```
-⎔ 源代码管理 (SOURCE CONTROL)
-├── 变更 (Changes)
-│   ├── src/app.tsx         (M - 修改)
-│   ├── package.json        (A - 新增)
-│   └── .env.example        (D - 删除)
-│
-├── 暂存的变更 (Staged Changes)
-│   └── README.md           (已暂存)
-│
-└── ...更多（合并冲突、未跟踪等）
-```
+<img src="/images/git-panel.svg" alt="VS Code Git 面板示意图" class="w-full max-w-2xl mx-auto my-6 rounded-lg shadow-lg" />
 
-- **M** = Modified（已修改）
-- **A** = Added（已新增）
-- **D** = Deleted（已删除）
-- **U** = Untracked（未跟踪）
-- **C** = Conflict（有冲突）
+| 标识 | 含义 |
+|------|------|
+| **M** | Modified（已修改） |
+| **A** | Added（已新增） |
+| **D** | Deleted（已删除） |
+| **U** | Untracked（未跟踪） |
+| **C** | Conflict（有冲突） |
 
 ## 日常操作流程
 

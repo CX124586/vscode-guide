@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" fill="none">
+  <rect width="600" height="350" rx="8" fill="#1e1e1e"/>
+
+  <!-- Git Sidebar -->
+  <rect x="0" y="0" width="220" height="350" fill="#252526"/>
+  <rect x="0" y="0" width="220" height="35" fill="#2d2d2d"/>
+  <text x="12" y="23" fill="#ddd" font-size="12" font-family="system-ui" font-weight="600">⎔ 源代码管理</text>
+
+  <!-- Commit Message Box -->
+  <rect x="8" y="42" width="204" height="28" rx="3" fill="#3c3c3c"/>
+  <text x="16" y="60" fill="#888" font-size="11" font-family="system-ui" font-style="italic">输入提交信息...</text>
+  <rect x="8" y="74" width="204" height="24" rx="3" fill="#0e639c"/>
+  <text x="16" y="90" fill="#fff" font-size="11" font-family="system-ui" font-weight="600">提交 (Ctrl+Enter)</text>
+
+  <!-- Changes sections -->
+  <rect x="0" y="105" width="220" height="28" fill="#2d2d2d"/>
+  <text x="12" y="123" fill="#8dc149" font-size="11" font-family="system-ui" font-weight="600">● 暂存的更改</text>
+
+  <g transform="translate(6, 138)" font-size="11" font-family="system-ui">
+    <rect x="0" y="-4" width="208" height="22" rx="3" fill="#37373d"/>
+    <text x="4" y="12" fill="#8dc149">📄</text>
+    <text x="22" y="12" fill="#ccc">README.md</text>
+    <text x="128" y="12" fill="#888">+5</text>
+  </g>
+
+  <rect x="0" y="175" width="220" height="28" fill="#2d2d2d"/>
+  <text x="12" y="193" fill="#e2b714" font-size="11" font-family="system-ui" font-weight="600">● 更改</text>
+
+  <g transform="translate(6, 208)" font-size="11" font-family="system-ui">
+    <rect x="0" y="-4" width="208" height="22" rx="3" fill="#37373d"/>
+    <text x="4" y="12" fill="#e2b714">📄</text>
+    <text x="22" y="12" fill="#ccc">src/app.tsx</text>
+    <text x="128" y="12" fill="#f14c4c">-3</text>
+    <text x="144" y="12" fill="#8dc149">+10</text>
+
+    <rect x="0" y="24" width="208" height="22" rx="3" fill="#37373d"/>
+    <text x="4" y="40" fill="#e2b714">📄</text>
+    <text x="22" y="40" fill="#ccc">src/utils.ts</text>
+    <text x="128" y="40" fill="#f14c4c">-1</text>
+    <text x="144" y="40" fill="#8dc149">+5</text>
+
+    <rect x="0" y="52" width="208" height="22" rx="3" fill="#37373d"/>
+    <text x="4" y="68" fill="#e2b714">📄</text>
+    <text x="22" y="68" fill="#ccc">public/index.html</text>
+    <text x="128" y="68" fill="#8dc149">+2</text>
+  </g>
+
+  <!-- Editor Area with Diff -->
+  <rect x="220" y="0" width="380" height="350" fill="#1e1e1e"/>
+
+  <!-- File Header -->
+  <rect x="220" y="0" width="380" height="30" fill="#2d2d2d"/>
+  <text x="232" y="20" fill="#ddd" font-size="11" font-family="system-ui">src/app.tsx (+10/-3)</text>
+
+  <!-- Diff View -->
+  <g transform="translate(232, 45)" font-family="monospace" font-size="11">
+    <!-- Line numbers -->
+    <text x="0" y="12" fill="#858585" text-anchor="end">18</text>
+    <text x="0" y="28" fill="#858585" text-anchor="end">19</text>
+    <text x="0" y="44" fill="#858585" text-anchor="end">20</text>
+    <text x="0" y="60" fill="#858585" text-anchor="end">21</text>
+    <text x="0" y="76" fill="#858585" text-anchor="end">22</text>
+    <text x="0" y="92" fill="#858585" text-anchor="end">23</text>
+
+    <!-- Diff markers -->
+    <rect x="82" y="-2" width="260" height="22" fill="#2d2d2d"/>
+    <rect x="82" y="20" width="260" height="22" fill="#553434"/>
+    <rect x="82" y="42" width="260" height="22" fill="#1e3a1e"/>
+    <rect x="82" y="64" width="260" height="22" fill="#2d2d2d"/>
+    <rect x="82" y="86" width="260" height="22" fill="#2d2d2d"/>
+
+    <!-- Gutter markers -->
+    <rect x="60" y="-2" width="22" height="22" fill="#2d2d2d"/>
+    <rect x="60" y="20" width="22" height="22" fill="#5a1d1d"/>
+    <rect x="60" y="42" width="22" height="22" fill="#1d3a1d"/>
+    <rect x="60" y="64" width="22" height="22" fill="#2d2d2d"/>
+    <rect x="60" y="86" width="22" height="22" fill="#2d2d2d"/>
+
+    <!-- Gutter chars -->
+    <text x="64" y="36" fill="#e46767">-</text>
+    <text x="64" y="58" fill="#6bb86b">+</text>
+
+    <!-- Content -->
+    <text x="88" y="12" fill="#d4d4d4">}</text>
+    <text x="88" y="28" fill="#d4d4d4">// 变更前</text>
+    <text x="88" y="36" fill="#f48771">const</text>
+    <text x="108" y="36" fill="#f48771">VERSION</text>
+    <text x="156" y="36" fill="#f48771">=</text>
+    <text x="164" y="36" fill="#f48771">'1.0.0'</text>
+
+    <text x="88" y="58" fill="#89d185">const</text>
+    <text x="108" y="58" fill="#89d185">VERSION</text>
+    <text x="156" y="58" fill="#89d185">=</text>
+    <text x="164" y="58" fill="#89d185">'2.0.0'</text>
+
+    <text x="88" y="80" fill="#d4d4d4">// ...</text>
+    <text x="88" y="100" fill="#d4d4d4">export default App</text>
+  </g>
+
+  <!-- Diff Summary Bar -->
+  <g transform="translate(236, 195)">
+    <rect x="0" y="0" width="156" height="20" rx="3" fill="#2d2d2d"/>
+    <rect x="4" y="4" width="8" height="12" rx="2" fill="#f14c4c"/>
+    <text x="16" y="14" fill="#f14c4c" font-size="10" font-family="monospace">-3</text>
+    <rect x="44" y="4" width="8" height="12" rx="2" fill="#8dc149"/>
+    <text x="56" y="14" fill="#8dc149" font-size="10" font-family="monospace">+10</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(16, 320)">
+    <rect x="0" y="0" width="10" height="10" rx="2" fill="#5a1d1d"/>
+    <text x="14" y="9" fill="#888" font-size="9" font-family="system-ui">删除</text>
+    <rect x="60" y="0" width="10" height="10" rx="2" fill="#1d3a1d"/>
+    <text x="74" y="9" fill="#888" font-size="9" font-family="system-ui">新增</text>
+    <rect x="120" y="0" width="10" height="10" rx="2" fill="#37373d"/>
+    <text x="134" y="9" fill="#888" font-size="9" font-family="system-ui">未变更</text>
+  </g>
+</svg>
