@@ -28,9 +28,9 @@ export const platforms: Record<Platform, PlatformConfig> = {
         title: '🌟 零基础入门',
         docs: [
           { title: '从0开始：搭建你的AI助手', description: '超详细安装与配置教程，手把手跟着做', order: 0, tags: ['新手'], slug: 'b01-beginner-setup' },
+          { title: '配置DeepSeek：用国产大模型当AI大脑', description: '通过CC-switch插件配置DeepSeek，省钱又好用', order: 0, tags: ['新手'], slug: 'b04-model-config' },
           { title: '第一次AI对话', description: '学会用AI帮你写东西、改东西、整理信息', order: 0, tags: ['新手'], slug: 'b02-first-ai-chat' },
           { title: '职场案例库：直接可用的AI提示词', description: '写周报、翻译、总结、做表格…复制粘贴就能用', order: 0, tags: ['新手'], slug: 'b03-office-cases' },
-          { title: '配置DeepSeek：用国产大模型当AI大脑', description: '通过CC-switch插件配置DeepSeek，省钱又好用', order: 0, tags: ['新手'], slug: 'b04-model-config' },
         ],
       },
       {
