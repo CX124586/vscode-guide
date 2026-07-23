@@ -15,6 +15,7 @@ const docRegistry: Record<string, Record<string, () => Promise<{ default: React.
     'b01-beginner-setup': () => import('@/content/macos/b01-beginner-setup.mdx'),
     'b02-first-ai-chat': () => import('@/content/macos/b02-first-ai-chat.mdx'),
     'b03-office-cases': () => import('@/content/macos/b03-office-cases.mdx'),
+    'b04-model-config': () => import('@/content/macos/b04-model-config.mdx'),
     '01-installation': () => import('@/content/macos/01-installation.mdx'),
     '02-interface-basics': () => import('@/content/macos/02-interface-basics.mdx'),
     '03-keyboard-shortcuts': () => import('@/content/macos/03-keyboard-shortcuts.mdx'),

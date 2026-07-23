@@ -1,0 +1,223 @@
+export const meta = {
+  title: '配置DeepSeek：用国产大模型当AI大脑',
+  description: '通过CC-switch插件配置DeepSeek，省钱又好用',
+  order: 0,
+  tags: ['新手'],
+}
+
+> 🎯 **本教程适合：** 不想花钱订阅 GitHub Copilot，或者想用国产大模型（DeepSeek）的用户。全部操作跟着点鼠标就行。
+
+> ⚠️ **注意：** 本教程和前面的「安装 GitHub Copilot」是**二选一**的关系。你可以选 Copilot（付费订阅），也可以选 DeepSeek（按量付费，很便宜）。本教程教你走 DeepSeek 路线。
+
+## 整体原理（一句话说清楚）
+
+```
+VS Code 里的 AI 插件
+     ↓
+CC-switch（一个本地转发工具，免费开源）
+     ↓
+DeepSeek 大模型（国产，能力强、价格低）
+```
+
+你只需在 DeepSeek 充 10-20 块钱，能用几个月。
+
+---
+
+## 第一步：下载 CC-switch
+
+CC-switch 是一个免费的开源软件，从 GitHub 下载。
+
+**跟着做：**
+
+1. 打开浏览器，访问以下网址：
+   ```
+   https://github.com/alhza/cc-switch/releases
+   ```
+2. 页面往下翻，找到 **最新版本**（最上面的那个）
+3. 在 "Assets"（资源）区域找到 macOS 的安装包：
+   - 如果你用的是 **Apple Silicon 芯片（M1/M2/M3/M4）**，下载：`CC-Switch-x.x.x-arm64.dmg`
+   - 如果不确定自己的芯片类型，下载：`CC-Switch-x.x.x.dmg`
+4. 点击下载，等待完成
+
+> 🔍 **不知道芯片类型？** 点击屏幕左上角苹果图标 → **关于本机** → 如果显示"Apple M1/M2/M3/M4"就是 Apple 芯片，显示"Intel"就是 Intel 芯片。
+
+## 第二步：安装 CC-switch
+
+1. 打开 **下载** 文件夹，找到刚下载的 `.dmg` 文件
+2. 双击打开它
+3. 在弹出的窗口中，把 **CC-Switch** 图标拖进 **Applications**（应用程序）文件夹
+4. 打开「应用程序」文件夹，双击 **CC-Switch** 打开
+5. **第一次打开**时，macOS 可能会提示无法验证开发者：
+   - 点击 **「取消」**
+   - 去 **系统设置 → 隐私与安全性**
+   - 往下翻，你会看到"CC-Switch 被阻挡"，点击 **「仍要打开」**
+   - 在弹出的确认框中点击 **「打开」**
+6. CC-switch 启动后，你会看到它的主界面——一个简洁的控制台
+
+> ✅ 安装成功！CC-switch 的小图标会出现在屏幕右上角的菜单栏（顶部状态栏）。
+
+## 第三步：获取 DeepSeek API 密钥
+
+API 密钥相当于你的"通行证"，让 CC-switch 能用 DeepSeek 的 AI 能力。
+
+**跟着做：**
+
+1. 打开浏览器，访问 DeepSeek 开放平台：
+   ```
+   https://platform.deepseek.com/api_keys
+   ```
+2. 如果没有账号，点击 **注册**（Sign Up）
+   - 可以用邮箱注册，也可以用微信扫码登录（国内用户推荐微信）
+   - 按提示完成注册和登录
+3. 登录后，点击左侧菜单的 **API Keys**（API 密钥）
+4. 点击 **创建 API Key**（Create API Key）
+5. 给你的密钥取个名字，比如 `vscode-use`
+6. 复制生成的一长串密钥（以 `sk-` 开头）
+
+> ⚠️ **重要：** 这个密钥只显示一次！复制后请立即粘贴到记事本里保存好。
+
+### 给 DeepSeek 充值
+
+DeepSeek 是按使用量收费的，需要先充值才能用：
+
+1. 在 DeepSeek 开放平台左侧菜单中，点击 **充值**（Top Up）
+2. 建议首次充值 **20 元**（日常使用能用好几个月）
+3. 支持微信支付、支付宝
+
+> 💡 **DeepSeek 非常便宜**：日常写文案、翻译、总结等，20 块钱够用几个月。
+
+## 第四步：在 CC-switch 中配置 DeepSeek
+
+现在把 DeepSeek 的密钥填进 CC-switch。
+
+**跟着做：**
+
+1. 打开 CC-switch（如果还没打开，从应用程序文件夹或顶部菜单栏图标打开）
+2. 在主界面中，点击右下角的 **「+」**（添加供应商）按钮
+3. 在弹出的列表中，找到并点击 **DeepSeek**
+4. 在 API Key 输入框中，粘贴你刚才复制的 DeepSeek 密钥（`sk-` 开头的那一串）
+5. **模型选择**：在模型下拉框中，选择以下任一：
+   - `deepseek-chat`——通用对话模型（推荐，日常办公够用）
+   - `deepseek-reasoner`——深度推理模型（适合复杂任务，稍贵）
+6. 确保 **Claude Code** 的开关是 **打开**（绿色）状态
+7. 点击底部的 **保存**（Save）
+
+> ✅ 配置完成！CC-switch 会自动启动本地代理。
+
+## 第五步：在 VS Code 中安装 Claude Code 插件
+
+CC-switch 是"桥梁"，VS Code 还需要一个 AI 插件来连接它。我们安装 Claude Code 插件。
+
+**跟着做：**
+
+1. 打开 VS Code
+2. 点击左侧的 **扩展** 图标（四个方块）
+3. 在搜索框中输入：`Claude Code`
+4. 找到 **Claude Code for VS Code**（发布者是 Anthropic）
+5. 点击 **Install**（安装）
+6. 安装完成后，你会看到 VS Code 左侧多了一个 AI 图标（小机器人）
+
+## 第六步：配置 VS Code 连接 CC-switch
+
+现在告诉 VS Code 的 Claude Code 插件："不要连 Anthropic 官方，去连本地的 CC-switch"。
+
+**跟着做：**
+
+1. 在 VS Code 中，按 **`Cmd+Shift+P`** 打开命令面板
+2. 在输入框中输入：`> Preferences: Open Settings (JSON)`
+3. 点击搜索结果中的 **首选项：打开设置（JSON）**
+4. 在打开的 `settings.json` 文件中，**找到最后一个大括号 `}` 的位置**
+5. 在最后一个 `}` **前面**，插入以下内容（如果前面已经有内容，记得在最后一项后面加逗号）：
+
+```jsonc
+"claudeCode.environmentVariables": [
+  {
+    "name": "ANTHROPIC_BASE_URL",
+    "value": "http://127.0.0.1:8080/anthropic"
+  },
+  {
+    "name": "ANTHROPIC_AUTH_TOKEN",
+    "value": "proxy-placeholder"
+  }
+]
+```
+
+6. 保存文件（**`Cmd+S`**）
+
+> 🔍 **看不懂 JSON？** 没关系——你只需要把上面那段文字复制粘贴进去，保存就行。电脑会自动理解它。
+
+### 跳过 Claude 官方登录
+
+Claude Code 插件默认会要求你登录 Anthropic 官方账号，我们告诉它"已经登录过了"：
+
+1. 打开 Finder（访达）
+2. 在顶部菜单点击 **前往 → 前往文件夹**
+3. 输入以下地址并点击 **前往**：
+   ```
+   ~/
+   ```
+4. 在打开的文件夹中，创建一个新文件，命名为 **`.claude.json`**（注意前面有个点）
+   - 如果不能在 Finder 中创建文件，打开"文本编辑"（TextEdit）
+   - 在菜单栏选择 **格式 → 制作纯文本**
+   - 输入以下内容：
+   ```json
+   {"hasCompletedOnboarding": true}
+   ```
+   - 保存时，文件名输入：`.claude.json`
+   - 保存位置选择你的用户目录（即 `~` 目录，打开 Finder 按 `Cmd+Shift+H`）
+
+## 第七步：重启 VS Code 让配置生效
+
+1. 按 **`Cmd+Shift+P`** 打开命令面板
+2. 输入：`> Developer: Reload Window`
+3. 点击执行，VS Code 会重新加载
+
+## 第八步：验证是否成功了
+
+1. 按 **`Cmd+Shift+I`** 打开 AI 对话面板
+2. 在输入框中输入以下文字，按回车：
+   ```
+   你好，请简单介绍一下你自己
+   ```
+3. 如果 AI 回复了，说明一切配置成功！🎉
+
+> ✅ **验证通过标准：** AI 会用中文回答你，并且回复速度流畅。如果回复中出现"DeepSeek"字样，说明确实是 DeepSeek 模型在工作。
+
+## 和 GitHub Copilot 的区别
+
+| 对比项 | GitHub Copilot | DeepSeek（本教程） |
+|--------|---------------|-------------------|
+| 费用 | 每月约 70 元 | 按用量计费，20 元用几个月 |
+| 模型能力 | 强 | 很强（DeepSeek 是国产最强之一） |
+| 网络要求 | 需要能访问 GitHub | 国内网络可直接使用 |
+| 注册门槛 | 需要 GitHub 账号、国际支付方式 | 微信扫码即可注册充值 |
+| 配置难度 | 简单（装好即用） | 稍复杂（需要配置 CC-switch） |
+
+## 切换模型/供应商
+
+配置好之后，如果你想换其他 AI 模型（比如换成阿里的通义千问、字节的豆包等），只需要：
+
+1. 打开 CC-switch
+2. 点击左下角的齿轮图标
+3. 在供应商列表中选择其他供应商
+4. 填入新的 API 密钥
+5. 保存即可——VS Code 不需要任何改动
+
+> 💡 **这就很方便了：** 以后换模型只需要在 CC-switch 里点几下，VS Code 配置不用动。
+
+## 常见问题
+
+| 问题 | 解决方法 |
+|------|---------|
+| AI 回复"402 Payment Required" | DeepSeek 余额不足了，去平台充值 |
+| AI 一直转圈不回消息 | 检查 CC-switch 是否在运行（顶部菜单栏有图标） |
+| 提示"401 Unauthorized" | API 密钥填错了，回 CC-switch 检查粘贴是否正确 |
+| VS Code 提示"环境变量未设置" | settings.json 没保存成功，重新检查第六步 |
+| CC-switch 下载太慢 | 可以尝试用镜像或换网络环境 |
+| 打开 CC-switch 提示已损坏 | 去 系统设置→隐私与安全性→仍要打开 |
+| 不知道怎么充值 DeepSeek | 打开 https://platform.deepseek.com → 左侧"充值"→ 微信支付 |
+| 想换回 GitHub Copilot | 在 settings.json 中删除添加的那几行配置，重启 VS Code 即可 |
+
+## 下一步
+
+现在你的 AI 助手已经配置成功了！接下来去学习 [第一次 AI 对话](/docs/macos/b02-first-ai-chat)，或者直接用 [职场案例库](/docs/macos/b03-office-cases) 的模板开始工作。
